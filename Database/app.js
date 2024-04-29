@@ -35,7 +35,7 @@ const createTables = async () => {
     const createProdottiTable = `
     CREATE TABLE IF NOT EXISTS Prodotti (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        Nome VARCHAR(255) NOT NULL,
+        nome VARCHAR(255) NOT NULL,
         categoria ENUM('tablet', 'monitor', 'smartphone','pc','laptop','tastiera','mouse','componenti_pc') NOT NULL,
         prezzo INT NOT NULL,
         immagine VARCHAR(255) NOT NULL, 

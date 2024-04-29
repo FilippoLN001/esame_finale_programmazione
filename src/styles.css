@@ -1,4 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
+html { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+body {
+    /* Utilizza linear-gradient per creare uno sfondo graduato con la palette fornita */
+    height: 100%;
+    background:
+    linear-gradient(
+      206deg,
+      rgba(10, 72, 138, 1) 34%,
+      rgba(29, 169, 179, 1) 84%,
+      rgba(2, 53, 56, 1) 99%
+    ),
+    linear-gradient(
+      45deg,
+      rgba(25, 57, 90, 1) 22%,
+      rgba(20, 60, 120, 1) 43%,
+      rgba(8, 165, 189, 1) 91%
+    );
+  background-blend-mode: normal, normal;
+    margin: 0; /* Rimuove il margine predefinito dal body */
+    font-family: Arial, sans-serif; /* Utilizza un font sans-serif di fallback */
+  }

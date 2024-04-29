@@ -35,6 +35,9 @@
 
 .product h3 {
   color: #333;
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 50;
+  font-style: normal;
   font-size: 20px;
   margin: 10px 0;
 }
@@ -46,10 +49,11 @@
 }
 
 .product p {
-  color: #023511;
-  font-family: "Anton", sans-serif;
-  font-weight: 400;
+  color: #181927;
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 50;
   font-style: normal;
+  font-size: 0.9rem;
   line-height: 1.5;
   margin: 5px 0;
 }

@@ -1,11 +1,9 @@
-<h2>Product List</h2>
 <div class="product-container">
    <!-- <div *ngIf="products.length; else noProducts"> -->
     <div *ngFor="let product of products" class="product" (click)="redirectToProductDetail(product.id)">
       <h3>{{ product.nome }}</h3>
       <img [src]="product.immagine" alt="{{ product.nome }}">
       <p> {{ product.categoria }}</p>
-      <p> {{ product.descrizione }}</p>
       <p>Prezzo: {{ product.prezzo | currency }}</p>
       <p>Data di messa in vendita: {{ product.data_messa_in_vendita | date }}</p>
     </div>

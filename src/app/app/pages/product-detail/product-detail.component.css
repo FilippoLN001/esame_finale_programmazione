@@ -3,42 +3,47 @@
     justify-content: center;
     align-items: center;
     margin-top: 20px;
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   }
   
   .product-images {
-    width: 50%;
+    width: 40%;
+    padding: 10px;
   }
   
   .product-images img {
     width: 100%;
+    max-width: 300px;
+    height: auto;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
   .product-info {
-    width: 50%;
+    width: 60%;
     padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    text-align: left;
   }
   
   .product-info h3 {
     color: #333;
     font-size: 24px;
     margin-bottom: 10px;
+    font-family: 'Bebas Neue', sans-serif; /* Applying Bebas Neue to headings */
   }
   
   .product-info p {
     color: #666;
     font-size: 16px;
     margin-bottom: 8px;
-    text-align: left; /* Modifica l'allineamento del testo a sinistra */
   }
   
   .product-info button {
-    background-color: #006400; /* Modifica il colore del pulsante in verde scuro */
+    background-color: #006400;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -46,9 +51,10 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    font-family: 'Bebas Neue', sans-serif; /* Applying Bebas Neue to buttons */
   }
   
   .product-info button:hover {
-    background-color: #004d00; /* Modifica il colore al passaggio del mouse */
+    background-color: #004d00;
   }
   
