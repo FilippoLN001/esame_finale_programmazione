@@ -1,0 +1,86 @@
+.footer {
+    background-color: #384a32; /* Colore di sfondo del footer */
+    color: #fff; /* Colore del testo */
+    padding: 50px 0; /* Spaziatura interna del footer */
+  }
+  
+  .footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1100px;
+    margin: auto;
+  }
+  
+  .footer-section {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 20px;
+  }
+  
+  .footer-section h2 {
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  
+  .footer-section p {
+    font-size: 14px;
+  }
+  
+  .contact span {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .socials a {
+    color: #fff;
+    font-size: 18px;
+    margin-right: 10px;
+  }
+  
+  .links ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .links li {
+    margin-bottom: 10px;
+  }
+  
+  .links a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .contact-form form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .contact-input {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #738e54;
+  }
+  
+  .btn {
+    background-color: #50673e;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .btn:hover {
+    background-color: #384a32;
+  }
+  
+  .footer-bottom {
+    background-color: #253126; /* Colore di sfondo per la parte inferiore del footer */
+    padding: 10px 0;
+    text-align: center;
+    color: #fff;
+  }
+  

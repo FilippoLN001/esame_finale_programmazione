@@ -5,22 +5,26 @@ import { HttpClientModule } from '@angular/common/http';
 
 
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { AppRoutingModule } from '../app.routes';
 import { ProductComponent } from '../product/product.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { ProductsComponent } from './pages/products/products.component';
 import { AppComponent } from '../app.component';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { FooterComponent } from '../footer/footer.component';
+import { ProductDetailComponent } from './pages/product-detail/product-detail.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
+    ProductDetailComponent,
     ProductsComponent,
     ProductComponent,
-    ProductsComponent,
-    NavbarComponent
+    NavbarComponent,
+    FooterComponent
   ],
   imports: [
     CommonModule,
@@ -37,6 +41,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
     //   InMemoryDataService, { dataEncapsulation: false }
     // )
   ],
+  providers: [CurrencyPipe, DatePipe, provideAnimationsAsync()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

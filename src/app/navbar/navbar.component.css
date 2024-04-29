@@ -1,35 +1,35 @@
 .navbar {
-    background-color: #333;
-    padding: 10px;
-  }
-  
-  .nav-list {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .nav-list li {
-    display: inline-block;
-    margin-right: 20px;
-  }
-  
-  .nav-list li:last-child {
-    margin-right: 0;
-  }
-  
-  .nav-list li a {
-    color: #fff;
-    text-decoration: none;
-    padding: 5px 10px;
-  }
-  
-  .nav-list li a:hover {
-    background-color: #555;
-    border-radius: 5px;
-  }
-  
-  .nav-list li a i {
-    margin-right: 5px;
-  }
-  
+  background-color: #181c1e; /* Colore di sfondo più scuro */
+  padding: 10px;
+  border-radius: 10px; /* Arrotonda i bordi della navbar */
+}
+
+.nav-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-list li {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.nav-list li:last-child {
+  margin-right: 0;
+}
+
+.nav-list li a {
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 10px;
+}
+
+.nav-list li a:hover {
+  background-color: #50673e; /* Colore di sfondo più chiaro durante l'hover */
+  border-radius: 5px;
+}
+
+.nav-list li a i {
+  margin-right: 5px;
+}

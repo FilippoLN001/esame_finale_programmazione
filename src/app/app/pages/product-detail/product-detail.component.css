@@ -1,0 +1,54 @@
+.product-detail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .product-images {
+    width: 50%;
+  }
+  
+  .product-images img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .product-info {
+    width: 50%;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .product-info h3 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .product-info p {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 8px;
+    text-align: left; /* Modifica l'allineamento del testo a sinistra */
+  }
+  
+  .product-info button {
+    background-color: #006400; /* Modifica il colore del pulsante in verde scuro */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .product-info button:hover {
+    background-color: #004d00; /* Modifica il colore al passaggio del mouse */
+  }
+  
