@@ -13,6 +13,7 @@ export class ProductModule { }
 export interface Prodotto {
   id: number;
   nome: string;
+  marca: string;
   categoria: string;
   prezzo: number;
   immagine : string;
