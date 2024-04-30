@@ -8,6 +8,9 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
+import { ButtonModule } from 'primeng/button';
+import { AvatarModule } from 'primeng/avatar';
+
 
 import { RouterModule } from '@angular/router';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
@@ -25,6 +28,9 @@ import { SignupComponent } from './pages/signup/signup.component';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '../auth.interceptor';
+import { SideBarComponent } from '../side-bar/side-bar.component';
+import { SidebarModule } from 'primeng/sidebar';
+
 
 
 @NgModule({
@@ -36,7 +42,8 @@ import { AuthInterceptor } from '../auth.interceptor';
     ProductComponent,
     NavbarComponent,
     FooterComponent,
-    SignupComponent
+    SignupComponent,
+    SideBarComponent
   ],
   imports: [
     CommonModule,
@@ -51,6 +58,10 @@ import { AuthInterceptor } from '../auth.interceptor';
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
+    AvatarModule,
+    ButtonModule,
+    SidebarModule,
+    
       // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
     // and returns simulated server responses.
     // Remove it when a real server is ready to receive requests.

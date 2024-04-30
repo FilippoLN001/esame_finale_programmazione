@@ -5,6 +5,7 @@
       </div>
     <div class="product-info">
         <h3>{{ product.nome }}</h3>
+        <h2>Marchio : {{product.marca}}</h2>
         <p class="product-description"> {{ product.descrizione }}</p>
         <p class="product-price">Prezzo: {{ product.prezzo | currency }}</p>
         <p>Data di messa in vendita: {{ product.data_messa_in_vendita | date }}</p>

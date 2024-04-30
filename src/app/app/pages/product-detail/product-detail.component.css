@@ -39,7 +39,7 @@
 }
 
 
-.product-info h3 {
+.product-info h3, h2 {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 28px; /* Dimensione aumentata per il titolo */
     margin-bottom: 20px; /* Maggiore spazio dopo il titolo */

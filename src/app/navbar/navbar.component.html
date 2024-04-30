@@ -5,6 +5,7 @@
     <li><a routerLink="/login">Login</a></li>
     <li><a routerLink="/signup">Register</a></li>
   </ul>
-  <button class="search">Search</button>
+  <button class="search" (click)="toggleSearch()">Search</button>
+  <input #searchBox type="text" class="search-box" [(ngModel)]="searchText" *ngIf="showSearch" placeholder="Search...">
   <button class="menu">Menu</button>
 </nav>
