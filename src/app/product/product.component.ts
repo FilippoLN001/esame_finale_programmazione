@@ -1,8 +1,7 @@
-// src/app/component/product/product.component.ts
-
 import { Component, Input, OnInit } from '@angular/core';
 import { ProductService } from '../product-service.service';
-import { Prodotto } from '../product-model/product-model.module';  // Assicurati che il percorso sia corretto
+import { Router } from '@angular/router'; // Importa Router da @angular/router
+import { Prodotto } from '../product-model/product-model.module';
 
 @Component({
   selector: 'product',
@@ -10,10 +9,10 @@ import { Prodotto } from '../product-model/product-model.module';  // Assicurati
   styleUrls: ['./product.component.css']
 })
 export class ProductComponent implements OnInit {
-@Input() listaProdotti: Prodotto[] = [];
- products : any
-
-  constructor(private productService: ProductService) {}
+  @Input() listaProdotti: Prodotto[] = [];
+  products: any;
+  
+  constructor(private productService: ProductService, private router: Router) {} // Inietta Router nel costruttore
 
   ngOnInit(){
     this.productService.getProducts().subscribe(
@@ -26,5 +25,9 @@ export class ProductComponent implements OnInit {
         // Considera di mostrare un messaggio di errore nell'UI
       }
     );
+  }
+
+  redirectToProductDetail(productId: number) {
+    this.router.navigate(['/products', productId]);
   }
 }

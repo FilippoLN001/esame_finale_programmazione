@@ -1,6 +1,7 @@
 /* Contenitore esterno per i prodotti */
 .product-container {
     display: flex;
+    gap: 5em;
     overflow-x: auto;
     padding: 20px;
 }
@@ -24,16 +25,19 @@
   border-radius: 10px;
   padding: 10px;
   background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Ombra leggera */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3); /* Ombra leggera */
 }
 
 .product:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.7);
 }
 
 .product h3 {
   color: #333;
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 50;
+  font-style: normal;
   font-size: 20px;
   margin: 10px 0;
 }
@@ -45,10 +49,11 @@
 }
 
 .product p {
-  color: #023511;
-  font-family: "Anton", sans-serif;
-  font-weight: 400;
+  color: #181927;
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 50;
   font-style: normal;
+  font-size: 0.9rem;
   line-height: 1.5;
   margin: 5px 0;
 }

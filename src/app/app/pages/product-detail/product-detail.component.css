@@ -1,0 +1,71 @@
+/* Includi Google Fonts nel tuo index.html */
+
+
+.product-detail {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Modificato per allineare i contenuti dall'alto */
+    margin-top: 20px;
+    max-width: 900px;
+    margin: auto;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.product-images {
+    width: 40%;
+    padding-right: 20px; /* Aggiunto spazio a destra */
+}
+
+.product-images img {
+    width: 100%;
+    max-width: 100%; /* Modificato per usare la larghezza massima disponibile */
+    height: auto;
+    border-radius: 8px;
+}
+
+.product-info .product-price {
+    color: #d35400; /* Un arancione brillante per far risaltare il prezzo */
+    font-weight: bold; /* Opzionale, rende il testo più spesso */
+    font-size: 18px; /* Opzionale, aumenta la dimensione del font per maggiore visibilità */
+    text-align: left;
+}
+
+.product-description{
+    font-weight: bold; /* Opzionale, rende il testo più spesso */
+    font-size: 18px; /* Opzionale, aumenta la dimensione del font per maggiore visibilità */
+}
+
+
+.product-info h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px; /* Dimensione aumentata per il titolo */
+    margin-bottom: 20px; /* Maggiore spazio dopo il titolo */
+    color: #333;
+}
+
+.product-info p {
+    font-family: 'Roboto', sans-serif; /* Cambiato il font */
+    font-size: 16px;
+    color: #666;
+    line-height: 1.6; /* Maggiore altezza della linea per migliorare la leggibilità */
+    margin-bottom: 15px; /* Incrementato lo spazio tra i paragrafi */
+}
+
+.product-info button {
+    background-color: #006400;
+    color: #fff;
+    border: none;
+    padding: 12px 24px; /* Maggiore padding per un aspetto più robusto */
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease; /* Animazione allargata per includere tutti gli aspetti del pulsante */
+}
+
+.product-info button:hover {
+    background-color: #004d00;
+    transform: scale(1.05); /* Effetto di zoom leggero al passaggio del mouse */
+}

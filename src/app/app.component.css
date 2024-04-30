@@ -1,6 +1,4 @@
-h1 {
-    margin-bottom: 0;
-  }
+
   nav a {
     padding: 1rem;
     text-decoration: none;
@@ -17,4 +15,10 @@ h1 {
   nav a.active {
     background-color: black;
   }
+  body {
+    /* Utilizza linear-gradient per creare uno sfondo graduato */
+    background: linear-gradient(135deg, #181c1e, #253126, #384a32, #50673e, #738e54);
+  }
+ 
+  
   

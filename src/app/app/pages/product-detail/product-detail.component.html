@@ -1,1 +1,14 @@
-<p>product-detail works!</p>
+<div class="product-detail" *ngIf="product">
+    <div class="product-images">
+      <!-- <div class="image-slide" *ngFor="let image of product.immagini"> -->
+        <img [src]="product.immagine">
+      </div>
+    <div class="product-info">
+        <h3>{{ product.nome }}</h3>
+        <p class="product-description"> {{ product.descrizione }}</p>
+        <p class="product-price">Prezzo: {{ product.prezzo | currency }}</p>
+        <p>Data di messa in vendita: {{ product.data_messa_in_vendita | date }}</p>
+        <button (click)="addToCart()">Aggiungi al carrello</button>
+    </div>
+</div>
+
