@@ -8,8 +8,6 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
-import { ButtonModule } from 'primeng/button';
-import { AvatarModule } from 'primeng/avatar';
 
 
 import { RouterModule } from '@angular/router';
@@ -31,6 +29,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '../auth/auth.interceptor';
 import { SigninComponent } from './pages/signin/signin.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
+import { SideBarComponent } from '../side-bar/side-bar.component';
 
 function tokenGetter() {
   return localStorage.getItem('token');
@@ -47,6 +46,7 @@ function tokenGetter() {
     FooterComponent,
     SignupComponent,
     SigninComponent,
+    SideBarComponent,
     AdminDashboardComponent
   ],
   imports: [
