@@ -73,12 +73,12 @@ a {
   font-size: 0;
   background: none;
   border: none;
+  cursor: pointer; /* rende chiaro che è cliccabile */
   margin-left: auto;
   filter: drop-shadow(0 0 5px rgba(0,0,0,.9));
   @media (min-width: 690px) {
     margin-left: 20px;
   }
-  
   &::before {
     content: '';
     display: inline-block;
@@ -106,4 +106,25 @@ img {
   width: 100%;
   min-height: 200vh;
   object-fit: cover;
+}
+.search-box {
+  display: block;
+  width: 0; /* inizialmente nascosta */
+  overflow: hidden; /* mantiene nascosti gli overflow durante l'animazione */
+  height: 2rem;
+  padding: 0 20px;
+  opacity: 0;
+  border: 1px solid #ccc; /* bordo più chiaro */
+  border-radius: 2em;
+  background-color: white; /* sfondo bianco */
+  color: black; /* testo nero */
+  transition: transform 0.4s ease, opacity 0.3s ease;
+  transform: scaleX(0); /* inizia ridotta a zero */
+  transform-origin: right; /* origine della trasformazione */
+}
+
+.search-box.open {
+  opacity: 1;
+  transform: scaleX(1); /* estende al 100% della larghezza */
+  width: 100%; /* necessario per abilitare l'input */
 }
