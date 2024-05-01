@@ -8,6 +8,10 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
+//primeng
+import { ButtonModule } from 'primeng/button';
+import { AvatarModule } from 'primeng/avatar';
+import { SidebarModule } from 'primeng/sidebar';
 
 
 import { RouterModule } from '@angular/router';
@@ -47,6 +51,7 @@ function tokenGetter() {
     SignupComponent,
     SigninComponent,
     SideBarComponent,
+    
     AdminDashboardComponent
   ],
   imports: [
@@ -61,6 +66,11 @@ function tokenGetter() {
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
+    //primeng
+    ButtonModule,
+    AvatarModule,
+    SidebarModule,
+
     MatIconModule,
     JwtModule.forRoot({
       config: {

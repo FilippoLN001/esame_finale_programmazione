@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
 export class NavbarComponent {
   searchText: string = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, public authService: AuthService) {}
 
   @ViewChild('searchBox') searchBox!: ElementRef;
   showSearch: boolean = false;
@@ -28,5 +29,10 @@ export class NavbarComponent {
 
   navigateTo(route: string) {
     this.router.navigate([route]);
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

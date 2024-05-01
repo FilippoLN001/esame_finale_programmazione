@@ -1,0 +1,48 @@
+/* Stili per il form di login */
+.login-container {
+    background: linear-gradient(to bottom, #28a745 0%, transparent 100%); /* Gradiente da verde a trasparente */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 100px auto; /* Centra il contenitore verticalmente e orizzontalmente */
+}
+
+.login-container h2 {
+    color: white; /* Imposta il colore del testo a bianco */
+    text-align: center;
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 200;
+    font-style: normal;
+    font-size: 22px;
+}
+
+mat-form-field {
+    width: 100%; /* Rende i campi del form larghi quanto il contenitore */
+    margin-bottom: 16px; /* Spazio tra i campi del form */
+}
+
+button {
+    width: 100%; /* Rende il bottone largo quanto il contenitore */
+    background-color: #218838; /* Colore del bottone, verde più scuro per il login */
+    color: white; /* Colore del testo del bottone */
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #1e7e34; /* Colore del bottone al passaggio del mouse, verde ancora più scuro */
+}
+
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button[mat-icon-button] {
+    margin-right: 10px; /* Regola questo valore a seconda delle tue necessità */
+}
