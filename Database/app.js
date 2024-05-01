@@ -6,6 +6,7 @@ const cors = require('cors');
 const app = express();
 const port = 3000;
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 
 app.use(bodyParser.json());
@@ -185,10 +186,10 @@ app.post('/signup', async (req, res) => {
       const secretKey = buffer.toString('hex');
       // Crea un token JWT usando la chiave segreta generata
       const token = jwt.sign({ username: username }, secretKey, { expiresIn: '1h' });
-
+      const hashedPassword = await bcrypt.hash(password, 10); // Hash della password con bcrypt
       // Inserisci il nuovo utente nel database insieme al token
-      const insertUserQuery = 'INSERT INTO Utenti (nome, cognome, username, email, password, tipo, token) VALUES (?, ?, ?, ?, ?, "User", ?)';
-      const [results] = await pool.query(insertUserQuery, [nome, cognome, username, email, password, token]);
+      const insertUserQuery = 'INSERT INTO Utenti (nome, cognome, username, email, password, tipo,token) VALUES (?, ?, ?, ?, ?, "User",?)';
+      const [results] = await pool.query(insertUserQuery, [nome, cognome, username, email, hashedPassword,token]);
 
       res.status(201).json({
         id: results.insertId,
@@ -203,6 +204,60 @@ app.post('/signup', async (req, res) => {
   }
 });
 
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const query = 'SELECT id, username, password, tipo FROM Utenti WHERE email = ?';
+    const [users] = await pool.query(query, [email]);
+
+    if (users.length === 0) {
+      return res.status(401).json({ message: 'Credenziali non valide' });
+    }
+
+    const user = users[0];
+
+    // Confronta la password hashata con quella fornita
+    const match = await bcrypt.compare(password, user.password);
+
+    if (match) {
+      // Crea un token JWT includendo il ruolo dell'utente
+      const token = jwt.sign({ userId: user.id, username: user.username, role: user.tipo }, 'your_secret_key', { expiresIn: '1h' });
+      res.json({ token, userRole: user.tipo });
+    } else {
+      res.status(401).json({ message: 'Credenziali non valide' });
+    }
+  } catch (error) {
+    console.error('Errore durante il login', error);
+    res.status(500).json({ message: 'Errore interno server' });
+  }
+});
+
+function isAdmin(req, res, next) {
+  const token = req.headers.authorization?.split(' ')[1]; // Bearer Token
+  if (!token) {
+    return res.status(403).json({ message: 'Token non fornito' });
+  }
+
+  jwt.verify(token, 'your_secret_key', (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: 'Token non valido' });
+    }
+
+    // Controlla se l'utente è un amministratore
+    if (decoded.role !== 'Admin') {
+      return res.status(403).json({ message: 'Accesso non autorizzato' });
+    }
+
+    req.user = decoded; // Salva l'utente decodificato nella richiesta per l'uso nei controller
+    next();
+  });
+}
+
+// Esempio di rotta protetta che solo gli amministratori possono accedere
+app.get('/admin/data', isAdmin, (req, res) => {
+  res.json({ message: 'Dati sensibili solo per Admin' });
+});
 
 
 //Acquisto
@@ -227,3 +282,6 @@ app.post('/acquista', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
+
+
+
