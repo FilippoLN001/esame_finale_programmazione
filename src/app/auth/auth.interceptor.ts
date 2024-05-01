@@ -1,4 +1,3 @@
-// auth.interceptor.ts
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -9,8 +8,9 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.authService.getToken();
-    if (token) {
+    // Verifica se l'utente è loggato e il token è valido
+    if (this.authService.isLoggedIn()) {
+      const token = this.authService.getToken(); // Ottiene il token solo se loggato e non scaduto
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`

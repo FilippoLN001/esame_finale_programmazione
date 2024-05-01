@@ -1,0 +1,9 @@
+<!-- signin.component.html -->
+<div class="login-container">
+    <form (ngSubmit)="onLogin()">
+      <input type="email" [(ngModel)]="user.email" name="email" placeholder="Email" required>
+      <input type="password" [(ngModel)]="user.password" name="password" placeholder="Password" required>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+  

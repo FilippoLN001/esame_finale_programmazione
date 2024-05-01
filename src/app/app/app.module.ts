@@ -15,6 +15,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { RouterModule } from '@angular/router';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { AppRoutingModule } from '../app.routes';
+import { JwtModule } from '@auth0/angular-jwt';
 
 import { ProductComponent } from '../product/product.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
@@ -27,11 +28,13 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { SignupComponent } from './pages/signup/signup.component';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { AuthInterceptor } from '../auth.interceptor';
-import { SideBarComponent } from '../side-bar/side-bar.component';
-import { SidebarModule } from 'primeng/sidebar';
+import { AuthInterceptor } from '../auth/auth.interceptor';
+import { SigninComponent } from './pages/signin/signin.component';
+import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 
-
+function tokenGetter() {
+  return localStorage.getItem('token');
+}
 
 @NgModule({
   declarations: [
@@ -43,7 +46,8 @@ import { SidebarModule } from 'primeng/sidebar';
     NavbarComponent,
     FooterComponent,
     SignupComponent,
-    SideBarComponent
+    SigninComponent,
+    AdminDashboardComponent
   ],
   imports: [
     CommonModule,
@@ -58,16 +62,13 @@ import { SidebarModule } from 'primeng/sidebar';
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
-    AvatarModule,
-    ButtonModule,
-    SidebarModule,
-    
-      // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
-    // and returns simulated server responses.
-    // Remove it when a real server is ready to receive requests.
-    // HttpClientInMemoryWebApiModule.forRoot(
-    //   InMemoryDataService, { dataEncapsulation: false }
-    // )
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ["example.com"],  // Lista i domini per cui i token sono validi
+        disallowedRoutes: ["http://example.com/examplebadroute/"],  // Lista le rotte dove non includere il token
+      }
+    })
   ],
   providers: [CurrencyPipe, DatePipe, provideAnimationsAsync(),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
