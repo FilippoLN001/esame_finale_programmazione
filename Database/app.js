@@ -2,6 +2,10 @@ const mysql = require('mysql2/promise');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const multer = require('multer');//file uploaderr
+const path = require('path');//percorso per importare immagini
+const moment = require('moment');//formattare le date in modo corretto
+
 
 const app = express();
 const port = 3000;
@@ -86,6 +90,41 @@ const createTables = async () => {
 // Chiama la funzione per creare le tabelle in modo asincrono
 createTables();
 
+//funzione importo immagini via client
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname,'../src/assets/imagines/')); // Utilizza __dirname per ottenere il percorso assoluto
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9); // Aggiungi un suffisso univoco al nome del file
+    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  fileFilter: function (req, file, cb) {
+    checkFileType(file, cb);
+  }
+});
+
+function checkFileType(file, cb) {
+  if (!file.originalname) {
+    console.error('Nome originale del file mancante');
+    cb(new Error('Nome originale del file mancante'), false);
+    return;
+  }
+  const filetypes = /jpeg|jpg|png|gif/;
+  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = filetypes.test(file.mimetype);
+
+  if (mimetype && extname) {
+    cb(null, true);
+  } else {
+    cb(new Error('Sono consentite solo immagini'), false);
+  }
+}
+
 
 // Operazioni CRUD
 app.post('/products', async (req, res) => {
@@ -129,20 +168,22 @@ app.get('/products/:id', async (req, res) => {
 });
 
 // Funzione per modificare un prodotto
-app.put('/products/:id', async (req, res) => {
-  const productId = req.params.id;
-  const { nome, marca, categoria, prezzo, immagine, descrizione, data_messa_in_vendita } = req.body;
-  const updateQuery = `
-    UPDATE Prodotti 
-    SET nome = ?, marca= ?, categoria = ?, prezzo = ?, immagine = ?, descrizione = ?, data_messa_in_vendita = ?
-    WHERE id = ?`;
+app.put('/products/:id', upload.single('immagine'), async (req, res) => {
   try {
-    const [results] = await pool.query(updateQuery, [nome, marca, categoria, prezzo, immagine, descrizione, data_messa_in_vendita, productId]);
-    if (results.affectedRows === 0) {
-      res.status(404).json({ message: 'Prodotto non trovato' });
-    } else {
-      res.status(200).json({ message: 'Prodotto modificato con successo' });
+    if (req.file == undefined) {
+      res.status(400).send({ message: 'No file selected!' });
+      return;
     }
+
+    const productId = req.params.id;
+    const imagePath = req.file.path;  
+    const productUpdates = req.body;
+    productUpdates.immagine = imagePath;  
+
+    const data_messa_in_vendita = moment(req.body.data_messa_in_vendita, 'ddd MMM DD YYYY HH:mm:ss').format('YYYY-MM-DD');
+    
+    await updateProduct(productId, productUpdates, data_messa_in_vendita);
+    res.status(200).send({ message: 'Product updated successfully' });
   } catch (error) {
     handleError(error, res);
   }
@@ -163,6 +204,8 @@ app.delete('/products/:id', async (req, res) => {
     handleError(error, res);
   }
 });
+
+
 
 //Utenti 
 
@@ -284,4 +327,35 @@ app.listen(port, () => {
 });
 
 
+
+//funzioni
+async function updateProduct(productId, updates, data_messa_in_vendita) {
+  const {
+    nome = '', 
+    marca = '', 
+    categoria = '', 
+    prezzo = 0, 
+    immagine = '', 
+    descrizione = ''
+  } = updates;
+  const query = `
+    UPDATE Prodotti SET
+    nome = ?, 
+    marca = ?, 
+    categoria = ?, 
+    prezzo = ?, 
+    immagine = ?, 
+    descrizione = ?, 
+    data_messa_in_vendita = ?
+    WHERE id = ?
+  `;
+
+  const values = [nome, marca, categoria, prezzo, immagine, descrizione, data_messa_in_vendita, productId];
+
+  try {
+    await pool.query(query, values);
+  } catch (error) {
+    throw error;
+  }
+}
 
