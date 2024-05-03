@@ -46,14 +46,16 @@ export class ProductService {
   }
 
   // Modifica un prodotto esistente
-  updateProduct(product: Prodotto): Observable<Prodotto> {
-    const url = `${this.apiUrl}/${product.id}`;
-    return this.http.put<Prodotto>(url, product, {
-      headers: { 'Content-Type': 'application/json' }
-    }).pipe(
-      catchError(this.handleError)
-    );
+  updateProduct(productId: string, formData: FormData): Observable<any> {
+    return this.http.put(`http://localhost:3000/products/${productId}`, formData)
+      .pipe(
+        catchError(error => {
+          console.error('Error updating product:', error);
+          return throwError(() => new Error('Failed to update the product'));
+        })
+      );
   }
+
 
   // Gestisci gli errori di rete
   private handleError(error: HttpErrorResponse) {

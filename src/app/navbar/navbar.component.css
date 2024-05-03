@@ -112,7 +112,7 @@ img {
   width: 0; /* inizialmente nascosta */
   overflow: hidden; /* mantiene nascosti gli overflow durante l'animazione */
   height: 2rem;
-  padding: 0 20px;
+  padding: 0 10px;
   opacity: 0;
   border: 1px solid #ccc; /* bordo più chiaro */
   border-radius: 2em;
@@ -126,5 +126,20 @@ img {
 .search-box.open {
   opacity: 1;
   transform: scaleX(1); /* estende al 100% della larghezza */
-  width: 100%; /* necessario per abilitare l'input */
+  width: 50%; /* necessario per abilitare l'input */
+  margin-right: 2%;
+}
+
+.icon-button {
+  background: none;     /* Nessuno sfondo */
+  border: none;         /* Nessun bordo */
+  padding: 0;           /* Nessun padding */
+  margin: 0;            /* Nessun margine */
+  cursor: pointer;      /* Cursor come puntatore per indicare che è cliccabile */
+  color: inherit;       /* Eredita il colore dal parent, o specifica il tuo colore */
+  outline: none;        /* Rimuove l'outline quando il bottone è focused */
+}
+
+.icon-button:hover {
+  color: #c5c4c4; /* Cambia colore al passaggio del mouse, scegli il colore che preferisci */
 }

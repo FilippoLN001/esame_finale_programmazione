@@ -1,0 +1,35 @@
+<!-- productedit.component.html -->
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="product-form">
+    <div class="form-group">
+      <label for="nome">Name:</label>
+      <input type="text" pInputText formControlName="nome" />
+    </div>
+    <div class="form-group">
+      <label for="marca">Brand:</label>
+      <input type="text" pInputText formControlName="marca" />
+    </div>
+    <div class="form-group">
+      <label for="categoria">Category:</label>
+      <input type="text" pInputText formControlName="categoria" />
+    </div>
+    <div class="form-group">
+      <label for="prezzo">Price:</label>
+      <input type="number" pInputText formControlName="prezzo" />
+    </div>
+    <div class="form-group">
+        <label for="immagine">Image Upload:</label>
+        <input type="file" (change)="onFileSelected($event)">
+      </div>
+    <div class="form-group">
+      <label for="descrizione">Description:</label>
+      <textarea pInputTextarea formControlName="descrizione"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="data_messa_in_vendita">Sale Date:</label>
+      <p-calendar [showIcon]="true" formControlName="data_messa_in_vendita"></p-calendar>
+    </div>
+    <div class="form-group submit-button">
+      <p-button type="submit" label="Save Changes"></p-button>
+    </div>
+  </form>
+  

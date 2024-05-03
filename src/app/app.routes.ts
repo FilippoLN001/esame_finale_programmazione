@@ -9,6 +9,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { AdminDashboardComponent } from './app/pages/admin-dashboard/admin-dashboard.component';
 import { AccesDeniedComponent } from './app/pages/acces-denied/acces-denied.component';
 import { NotFoundComponent } from './app/pages/not-found/not-found.component';
+import { ProducteditComponent } from './app/pages/productedit/productedit.component';
 
 
 export const routes: Routes = [
@@ -19,6 +20,7 @@ export const routes: Routes = [
     { path: 'products', component: ProductsComponent}, //pagina dei prodotti
     { path: 'products/:id', component: ProductDetailComponent, canActivate: [AuthGuard] }, //visializzazione del prodotto specifico solo se si e' autenticato
     { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard], data: { role: 'Admin' }}, //pagina di accesso solo admin
+    { path: 'edit-product/:id', component: ProducteditComponent,canActivate: [AuthGuard], data: { role: 'Admin' } },
     { path: 'access-denied', component: AccesDeniedComponent },  // Rotta per l'accesso negato
     { path: 'not-found', component: NotFoundComponent },  // Rotta per pagina non trovata
     { path: '**', redirectTo: '/not-found' }  // Wildcard route per una navigazione non definita
