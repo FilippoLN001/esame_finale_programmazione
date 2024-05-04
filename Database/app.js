@@ -93,7 +93,9 @@ createTables();
 //funzione importo immagini via client
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname,'../src/assets/imagines/')); // Utilizza __dirname per ottenere il percorso assoluto
+    const destinationPath = path.join(__dirname).replace(/\\/g, '/'); // Sostituisci le barre rovesciate con barre normali
+    console.log(destinationPath); // Opzionale: stampa il percorso di destinazione per debug
+    cb(null, destinationPath);
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9); // Aggiungi un suffisso univoco al nome del file
@@ -143,12 +145,27 @@ app.get('/products', async (req, res) => {
   try {
     const [results] = await pool.query('SELECT * FROM Prodotti');
     console.log('Products fetched:', results);
-    res.status(200).json(results);
+
+    // Modifica il percorso dell'immagine in ciascun prodotto
+    const productsWithModifiedImagePath = results.map(product => {
+      // Ottieni solo il nome del file dall'intero percorso
+      const imageName = product.immagine.split('\\').pop();
+      // Se il percorso dell'immagine contiene '../assets/imagines', mantieni lo stesso percorso, altrimenti, aggiungi il percorso relativo
+      const imagePath = product.immagine.includes('../assets/imagines') ? product.immagine : `../assets/imagines/${imageName}`;
+
+      return {
+        ...product,
+        immagine: imagePath
+      };
+    });
+
+    res.status(200).json(productsWithModifiedImagePath);
   } catch (error) {
     console.error("Failed to fetch products:", error);
     res.status(500).json({ error: 'Database operation failed' });
   }
 });
+
 
 
 

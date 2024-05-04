@@ -33,10 +33,18 @@ export class AdminDashboardComponent {
   }
 
   deleteProduct(product: any) {
-    // Qui potresti chiamare un servizio per effettuare la richiesta di eliminazione al server
-    // E poi aggiornare la lista dei prodotti se la chiamata ha successo
-    console.log('Deleting product', product.id);
-    // Implementa la logica di eliminazione qui
+     // Chiamata alla funzione di eliminazione del servizio ProductService
+     this.productService.deleteProduct(product.id).subscribe(
+      () => {
+        console.log('Product deleted successfully');
+        // Aggiorna la lista dei prodotti qui se necessario
+        this.refreshPage();
+      },
+      error => {
+        console.error('Failed to delete product:', error);
+        // Gestisci gli errori qui
+      }
+    );
   }
 
   refreshPage(){

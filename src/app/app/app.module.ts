@@ -16,6 +16,8 @@ import { SidebarModule } from 'primeng/sidebar';
 import { BadgeModule } from 'primeng/badge';
 import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ToastModule } from 'primeng/toast';
 
 
 
@@ -81,6 +83,8 @@ function tokenGetter() {
     SidebarModule,
     TableModule,
     CalendarModule,
+    ConfirmPopupModule,
+    ToastModule,
     // PrimeIcons,
     BadgeModule,
 
