@@ -1,20 +1,34 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
-
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   searchText: string = '';
-  badgeCount: number = 0;  // Inizializza il conteggio a 0
+  badgeCount: number = 0;
+  username: string = '';
+
   constructor(private router: Router, public authService: AuthService) {}
 
   @ViewChild('searchBox') searchBox!: ElementRef;
   showSearch: boolean = false;
+
+  ngOnInit() {
+    this.authService.getUsernameObservable().subscribe((username: string) => {
+      console.log('Username from observable:', username);
+      this.username = username;
+      console.log('Username set in component:', this.username);
+    });
+
+    // Fetch user details if token exists
+    if (this.authService.isLoggedIn()) {
+      this.authService.fetchUserDetails();
+    }
+  }
 
   toggleSearch(): void {
     this.showSearch = !this.showSearch;
@@ -38,6 +52,6 @@ export class NavbarComponent {
   }
 
   incrementBadge() {
-    this.badgeCount++;  // Incrementa il conteggio di 1 ogni volta che il bottone viene cliccato
+    this.badgeCount++;
   }
 }

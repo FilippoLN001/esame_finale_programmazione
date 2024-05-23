@@ -42,6 +42,7 @@ import { AuthInterceptor } from '../auth/auth.interceptor';
 import { SigninComponent } from './pages/signin/signin.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { SideBarComponent } from '../side-bar/side-bar.component';
+import { AddItemComponent } from './pages/add-item/add-item.component';
 
 
 function tokenGetter() {
@@ -61,6 +62,7 @@ function tokenGetter() {
     SignupComponent,
     SigninComponent,
     SideBarComponent,
+    AddItemComponent,
     
     AdminDashboardComponent
   ],

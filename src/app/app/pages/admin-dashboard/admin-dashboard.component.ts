@@ -1,4 +1,4 @@
-import { Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Prodotto } from '../../../product-model/product-model.module';
 import { ProductService } from '../../../product-service.service';
 import { Router } from '@angular/router';
@@ -13,28 +13,29 @@ export class AdminDashboardComponent {
   products: any;
   dt1: any;
 
-    constructor(private productService: ProductService,private router: Router ) {}
+  constructor(private productService: ProductService, private router: Router) {}
 
-    ngOnInit() {
-      this.productService.getProducts().subscribe(
-        (prodotti: Prodotto[]) => {
-          this.listaProdotti = prodotti;
-          this.products = prodotti; // Assumendo che tu voglia tenere due liste separate
-        },
-        (error) => {
-          console.error('Errore durante il recupero dei prodotti:', error);
-          // Considera di mostrare un messaggio di errore nell'UI
-        }
-      );
+  ngOnInit() {
+    this.productService.getProducts().subscribe(
+      (prodotti: Prodotto[]) => {
+        this.listaProdotti = prodotti;
+        this.products = prodotti; // Assumendo che tu voglia tenere due liste separate
+      },
+      (error) => {
+        console.error('Errore durante il recupero dei prodotti:', error);
+        // Considera di mostrare un messaggio di errore nell'UI
+      }
+    );
   }
+
   editProduct(productId: number) {
     // Naviga alla route di modifica, assicurati che la route sia configurata in app-routing.module.ts
     this.router.navigate(['edit-product', productId]); // Assumi che `product.id` sia l'identificatore unico
   }
 
   deleteProduct(product: any) {
-     // Chiamata alla funzione di eliminazione del servizio ProductService
-     this.productService.deleteProduct(product.id).subscribe(
+    // Chiamata alla funzione di eliminazione del servizio ProductService
+    this.productService.deleteProduct(product.id).subscribe(
       () => {
         console.log('Product deleted successfully');
         // Aggiorna la lista dei prodotti qui se necessario
@@ -47,7 +48,11 @@ export class AdminDashboardComponent {
     );
   }
 
-  refreshPage(){
+  refreshPage() {
     window.location.reload();
+  }
+
+  addItem() {
+    this.router.navigate(['addItem']); // Naviga alla route per aggiungere un nuovo prodotto
   }
 }

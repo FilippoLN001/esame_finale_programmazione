@@ -1,17 +1,17 @@
-const mysql = require('mysql2/promise');
 const express = require('express');
+const mysql = require('mysql2/promise');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const multer = require('multer');//file uploaderr
-const path = require('path');//percorso per importare immagini
-const moment = require('moment');//formattare le date in modo corretto
-
-
-const app = express();
-const port = 3000;
+const moment = require('moment');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
+
+const app = express();
+const port = 3000;
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -31,143 +31,59 @@ app.use((req, res, next) => {
   next();
 });
 
+// Configurazione per servire i file statici
+app.use('/assets/imagines', express.static(path.join(__dirname, '../src/assets/imagines')));
+
 const handleError = (error, res) => {
   console.error(error);
   res.status(500).json({ error: error.message || 'Internal Server Error' });
 };
 
-// Definizione delle tabelle nel database se non esistono
-const createTables = async () => {
-  try {
-    const createProdottiTable = `
-    CREATE TABLE IF NOT EXISTS Prodotti (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        nome VARCHAR(255) NOT NULL,
-        marca VARCHAR(255) NOT NULL,
-        categoria ENUM('tablet', 'monitor', 'smartphone','pc','laptop','tastiera','mouse','componenti_pc') NOT NULL,
-        prezzo INT NOT NULL,
-        immagine VARCHAR(255) NOT NULL, 
-        descrizione VARCHAR(255),
-        data_messa_in_vendita DATE NOT NULL
-    );`;
-
-    const createUtentiTable = `
-    CREATE TABLE IF NOT EXISTS Utenti (
-      id INT AUTO_INCREMENT PRIMARY KEY, 
-      tipo ENUM('Admin', 'User') NOT NULL,
-      nome VARCHAR(255) NOT NULL,
-      cognome VARCHAR(255) NOT NULL,
-      username VARCHAR(255) NOT NULL UNIQUE,
-      email VARCHAR(255) NOT NULL UNIQUE,
-      password VARCHAR(255) NOT NULL,
-      token VARCHAR(512) 
-  );`;
-
-    const createAcquistoTable = `
-    CREATE TABLE IF NOT EXISTS Acquisto (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        id_prodotto INT NOT NULL,
-        id_utente INT NOT NULL,
-        FOREIGN KEY (id_prodotto) REFERENCES Prodotti(id),
-        FOREIGN KEY (id_utente) REFERENCES Utenti(id)
-    );`;
-
-    await pool.query(createProdottiTable);
-    console.log('Tabella Prodotti creata con successo');
-
-    // Assicurati di non eseguire questa query se la tabella 'Utenti' esiste già e ha dati. Potrebbe essere necessario gestire diversamente l'aggiunta di una colonna se la tabella è già in uso.
-    await pool.query(createUtentiTable);
-    console.log('Tabella Utenti creata con successo');
-
-    await pool.query(createAcquistoTable);
-    console.log('Tabella Acquisto creata con successo');
-  } catch (err) {
-    console.error('Errore durante la creazione delle tabelle: ' + err.message);
-  }
-};
-
-
-// Chiama la funzione per creare le tabelle in modo asincrono
-createTables();
-
-//funzione importo immagini via client
+// Configurazione di multer per salvare le immagini nella cartella esistente
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    const destinationPath = path.join(__dirname).replace(/\\/g, '/'); // Sostituisci le barre rovesciate con barre normali
-    console.log(destinationPath); // Opzionale: stampa il percorso di destinazione per debug
-    cb(null, destinationPath);
+  destination: (req, file, cb) => {
+    const uploadPath = path.join(__dirname, '../src/assets/imagines');
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+    cb(null, uploadPath);
   },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9); // Aggiungi un suffisso univoco al nome del file
-    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
   }
 });
 
-const upload = multer({
-  storage: storage,
-  fileFilter: function (req, file, cb) {
-    checkFileType(file, cb);
+const upload = multer({ storage: storage });
+
+app.use(express.json());
+
+app.post('/products', upload.single('immagine'), async (req, res) => {
+  const { nome, marca, categoria, prezzo, descrizione, data_messa_in_vendita } = req.body;
+  const immagine = req.file ? `assets/imagines/${req.file.filename}` : null;
+
+  if (!immagine) {
+    return res.status(400).json({ message: 'Errore: il file immagine non è stato caricato correttamente.' });
   }
-});
 
-function checkFileType(file, cb) {
-  if (!file.originalname) {
-    console.error('Nome originale del file mancante');
-    cb(new Error('Nome originale del file mancante'), false);
-    return;
-  }
-  const filetypes = /jpeg|jpg|png|gif/;
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = filetypes.test(file.mimetype);
-
-  if (mimetype && extname) {
-    cb(null, true);
-  } else {
-    cb(new Error('Sono consentite solo immagini'), false);
-  }
-}
-
-
-// Operazioni CRUD
-app.post('/products', async (req, res) => {
-  const { nome, marca, categoria, prezzo, immagine, descrizione, data_messa_in_vendita } = req.body;
-  const query = 'INSERT INTO Prodotti (nome, marca, categoria, prezzo, immagine, descrizione, data_messa_in_vendita) VALUES (?, ?, ?, ?, ?, ?, ?)';
   try {
-    const [results] = await pool.query(query, [nome, marca, categoria, prezzo, immagine, descrizione, data_messa_in_vendita]);
-    res.status(201).json({ id: results.insertId });
+    const query = 'INSERT INTO Prodotti (nome, marca, categoria, prezzo, immagine, descrizione, data_messa_in_vendita) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    await pool.query(query, [nome, marca, categoria, prezzo, immagine, descrizione, data_messa_in_vendita]);
+    res.status(201).json({ message: 'Prodotto aggiunto con successo' });
   } catch (error) {
-    handleError(error, res);
+    console.error('Errore durante l\'aggiunta del prodotto:', error);
+    res.status(500).json({ message: 'Errore durante l\'aggiunta del prodotto', error: error.message });
   }
 });
 
 app.get('/products', async (req, res) => {
-  console.log('Attempting to fetch products...');
   try {
     const [results] = await pool.query('SELECT * FROM Prodotti');
-    console.log('Products fetched:', results);
-
-    // Modifica il percorso dell'immagine in ciascun prodotto
-    const productsWithModifiedImagePath = results.map(product => {
-      // Ottieni solo il nome del file dall'intero percorso
-      const imageName = product.immagine.split('\\').pop();
-      // Se il percorso dell'immagine contiene '../assets/imagines', mantieni lo stesso percorso, altrimenti, aggiungi il percorso relativo
-      const imagePath = product.immagine.includes('../assets/imagines') ? product.immagine : `../assets/imagines/${imageName}`;
-
-      return {
-        ...product,
-        immagine: imagePath
-      };
-    });
-
-    res.status(200).json(productsWithModifiedImagePath);
+    res.status(200).json(results);
   } catch (error) {
     console.error("Failed to fetch products:", error);
     res.status(500).json({ error: 'Database operation failed' });
   }
 });
-
-
-
 
 app.get('/products/:id', async (req, res) => {
   const { id } = req.params;
@@ -184,18 +100,15 @@ app.get('/products/:id', async (req, res) => {
   }
 });
 
-// Funzione per modificare un prodotto
 app.put('/products/:id', upload.single('immagine'), async (req, res) => {
   try {
-    if (req.file == undefined) {
-      res.status(400).send({ message: 'No file selected!' });
-      return;
-    }
-
     const productId = req.params.id;
-    const imagePath = req.file.path;  
     const productUpdates = req.body;
-    productUpdates.immagine = imagePath;  
+
+    if (req.file) {
+      const imagePath = `assets/imagines/${req.file.filename}`;
+      productUpdates.immagine = imagePath;
+    }
 
     const data_messa_in_vendita = moment(req.body.data_messa_in_vendita, 'ddd MMM DD YYYY HH:mm:ss').format('YYYY-MM-DD');
     
@@ -205,7 +118,6 @@ app.put('/products/:id', upload.single('immagine'), async (req, res) => {
     handleError(error, res);
   }
 });
-
 
 app.delete('/products/:id', async (req, res) => {
   const { id } = req.params;
@@ -222,10 +134,6 @@ app.delete('/products/:id', async (req, res) => {
   }
 });
 
-
-
-//Utenti 
-
 app.post('/signup', async (req, res) => {
   const { nome, cognome, username, email, password } = req.body;
   const userExistsQuery = 'SELECT * FROM Utenti WHERE username = ? OR email = ?';
@@ -237,17 +145,14 @@ app.post('/signup', async (req, res) => {
       return;
     }
 
-    // Genera una chiave segreta casuale per ogni utente
     crypto.randomBytes(48, async (err, buffer) => {
       if (err) {
         console.error('Errore durante la generazione della chiave segreta', err);
         return res.status(500).json({ message: 'Errore durante la generazione della chiave segreta' });
       }
       const secretKey = buffer.toString('hex');
-      // Crea un token JWT usando la chiave segreta generata
       const token = jwt.sign({ username: username }, secretKey, { expiresIn: '1h' });
-      const hashedPassword = await bcrypt.hash(password, 10); // Hash della password con bcrypt
-      // Inserisci il nuovo utente nel database insieme al token
+      const hashedPassword = await bcrypt.hash(password, 10);
       const insertUserQuery = 'INSERT INTO Utenti (nome, cognome, username, email, password, tipo,token) VALUES (?, ?, ?, ?, ?, "User",?)';
       const [results] = await pool.query(insertUserQuery, [nome, cognome, username, email, hashedPassword,token]);
 
@@ -276,14 +181,14 @@ app.post('/login', async (req, res) => {
     }
 
     const user = users[0];
+    console.log('User found:', user);
 
-    // Confronta la password hashata con quella fornita
     const match = await bcrypt.compare(password, user.password);
 
     if (match) {
-      // Crea un token JWT includendo il ruolo dell'utente
       const token = jwt.sign({ userId: user.id, username: user.username, role: user.tipo }, 'your_secret_key', { expiresIn: '1h' });
-      res.json({ token, userRole: user.tipo });
+      res.json({ token, username: user.username, userRole: user.tipo });
+      console.log('Login response:', { token, username: user.username, userRole: user.tipo });
     } else {
       res.status(401).json({ message: 'Credenziali non valide' });
     }
@@ -294,7 +199,7 @@ app.post('/login', async (req, res) => {
 });
 
 function isAdmin(req, res, next) {
-  const token = req.headers.authorization?.split(' ')[1]; // Bearer Token
+  const token = req.headers.authorization?.split(' ')[1];
   if (!token) {
     return res.status(403).json({ message: 'Token non fornito' });
   }
@@ -304,27 +209,22 @@ function isAdmin(req, res, next) {
       return res.status(401).json({ message: 'Token non valido' });
     }
 
-    // Controlla se l'utente è un amministratore
     if (decoded.role !== 'Admin') {
       return res.status(403).json({ message: 'Accesso non autorizzato' });
     }
 
-    req.user = decoded; // Salva l'utente decodificato nella richiesta per l'uso nei controller
+    req.user = decoded;
     next();
   });
 }
 
-// Esempio di rotta protetta che solo gli amministratori possono accedere
 app.get('/admin/data', isAdmin, (req, res) => {
   res.json({ message: 'Dati sensibili solo per Admin' });
 });
 
-
-//Acquisto
-
 app.post('/acquista', async (req, res) => {
-  const { id_prodotto } = req.body;  // ID del prodotto acquistato
-  const id_utente = req.user.id;  // ID dell'utente, estratto da sessione o JWT
+  const { id_prodotto } = req.body;
+  const id_utente = req.user.id;
 
   try {
     const inserisciAcquisto = 'INSERT INTO Acquisto (id_prodotto, id_utente, data_acquisto) VALUES (?, ?, NOW())';
@@ -336,16 +236,10 @@ app.post('/acquista', async (req, res) => {
   }
 });
 
-
-
-
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
 
-
-
-//funzioni
 async function updateProduct(productId, updates, data_messa_in_vendita) {
   const {
     nome = '', 
@@ -375,4 +269,3 @@ async function updateProduct(productId, updates, data_messa_in_vendita) {
     throw error;
   }
 }
-

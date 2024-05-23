@@ -66,7 +66,7 @@ export class ProducteditComponent implements OnInit {
   
       const formData = new FormData();
       if (this.selectedFile) {
-        formData.append('immagine', this.selectedFile, this.selectedFile.name);
+        formData.append('immagine', this.selectedFile);
       }
       Object.keys(this.productForm.value).forEach(key => {
         formData.append(key, this.productForm.value[key]);
@@ -75,7 +75,7 @@ export class ProducteditComponent implements OnInit {
       this.productService.updateProduct(productId, formData).subscribe({
         next: () => {
           console.log('Product updated successfully.');
-          this.router.navigate(['/products']);
+          this.router.navigate(['/dashboard']);
         },
         error: (err) => {
           console.error('Update failed:', err);

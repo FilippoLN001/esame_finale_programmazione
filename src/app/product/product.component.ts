@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ProductService } from '../product-service.service';
-import { Router } from '@angular/router'; // Importa Router da @angular/router
+import { Router } from '@angular/router';
 import { Prodotto } from '../product-model/product-model.module';
 
 @Component({
@@ -11,20 +11,26 @@ import { Prodotto } from '../product-model/product-model.module';
 export class ProductComponent implements OnInit {
   @Input() listaProdotti: Prodotto[] = [];
   products: any;
-  
-  constructor(private productService: ProductService, private router: Router) {} // Inietta Router nel costruttore
 
-  ngOnInit(){
+  constructor(private productService: ProductService, private router: Router) {}
+
+  ngOnInit() {
     this.productService.getProducts().subscribe(
       (prodotti: Prodotto[]) => {
         this.listaProdotti = prodotti;
-        this.products = prodotti; // Assumendo che tu voglia tenere due liste separate
+        this.products = prodotti;
+        this.logImagePaths(); // Log dei percorsi delle immagini
       },
       (error) => {
         console.error('Errore durante il recupero dei prodotti:', error);
-        // Considera di mostrare un messaggio di errore nell'UI
       }
     );
+  }
+
+  logImagePaths() {
+    this.products.forEach((product: { immagine: any; }) => {
+      console.log('Percorso immagine:', product.immagine);
+    });
   }
 
   redirectToProductDetail(productId: number) {

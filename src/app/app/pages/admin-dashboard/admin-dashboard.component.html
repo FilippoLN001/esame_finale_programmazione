@@ -1,8 +1,11 @@
-<p-table [value]="products" [tableStyle]="{ 'min-width': '50rem' }" >
+<p-table [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
             Products
-            <p-button class="button-refresh" icon="pi pi-refresh" (click)="refreshPage()"  ></p-button>
+            <div>
+                <p-button class="button-refresh" icon="pi pi-refresh" (click)="refreshPage()"></p-button>
+                <p-button class="button-add" icon="pi pi-plus" label="Aggiungi" (click)="addItem()"></p-button>
+            </div>
         </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -10,7 +13,7 @@
             <th>Id</th>
             <th>Name</th>
             <th>Categoria</th>
-            <th>prezzo</th>
+            <th>Prezzo</th>
             <th>Messa in vendita</th>
             <th></th>
             <th></th>
@@ -24,8 +27,10 @@
             <td>{{ product.prezzo | currency }}</td>
             <td>{{ product.data_messa_in_vendita | date }}</td>
             <td>
-                <p-button label="Modifica" icon="pi pi-pencil" (click)="editProduct(product.id)"></p-button></td>
-                <td><p-button label="Elimina" icon="pi pi-trash" (click)="deleteProduct(product)" class="p-button-danger"></p-button>
+                <p-button label="Modifica" icon="pi pi-pencil" (click)="editProduct(product.id)"></p-button>
+            </td>
+            <td>
+                <p-button label="Elimina" icon="pi pi-trash" (click)="deleteProduct(product)" class="p-button-danger"></p-button>
             </td>
         </tr>
     </ng-template>
