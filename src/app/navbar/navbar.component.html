@@ -2,10 +2,19 @@
   <a routerLink="/dashboard">TechHive</a>
   <ul class="list">
     <li><a routerLink="/products">Products</a></li>
-    <li><a routerLink="/login">Login</a></li>
-    <li><a routerLink="/signup">Register</a></li>
+    <!-- Mostra questi link solo se l'utente non è loggato -->
+    <li *ngIf="!authService.isLoggedIn()"><a routerLink="/login">Login</a></li>
+    <li *ngIf="!authService.isLoggedIn()"><a routerLink="/signup">Register</a></li>
+    <!-- Mostra il link di logout solo se l'utente è loggato -->
+    <li *ngIf="authService.isLoggedIn()"> Welcome, {{username}}</li>
+    <li *ngIf="authService.isLoggedIn()"><a (click)="logout()">Logout</a></li>
+    <!-- Mostra il link "Admin Dashboard" solo se l'utente è un Admin -->
+    <li *ngIf="authService.isAdmin() && authService.isLoggedIn()"><a routerLink="/admin-dashboard">Admin Dashboard</a></li>
   </ul>
   <button class="search" (click)="toggleSearch()">Search</button>
   <input #searchBox type="text" class="search-box" [(ngModel)]="searchText" *ngIf="showSearch" placeholder="Search...">
-  <button class="menu">Menu</button>
+  <button class="icon-button" (click)="incrementBadge()">
+    <!-- <p-badge [value]="badgeCount"></p-badge> -->
+    <i class="pi pi-cart-arrow-down" style="font-size: 1.5rem;"></i>
+  </button>
 </nav>

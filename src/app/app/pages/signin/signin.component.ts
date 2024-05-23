@@ -15,6 +15,8 @@ export class SigninComponent {
     password: ''
   };
 
+  hide = true;
+
   constructor(
     private http: HttpClient,
     private snackBar: MatSnackBar,
