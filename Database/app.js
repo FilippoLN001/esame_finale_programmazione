@@ -3,7 +3,6 @@ const mysql = require('mysql2/promise');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const moment = require('moment');
 const jwt = require('jsonwebtoken');
@@ -13,8 +12,8 @@ const crypto = require('crypto');
 const app = express();
 const port = 3000;
 
-app.use(bodyParser.json());
 app.use(cors());
+app.use(express.json()); // Usare express.json() invece di body-parser per le richieste JSON
 
 const pool = mysql.createPool({
   host: 'localhost',
@@ -81,7 +80,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Configurazione per servire i file statici
 app.use('/assets/imagines', express.static(path.join(__dirname, '../src/assets/imagines')));
 
 const handleError = (error, res) => {
@@ -89,7 +87,6 @@ const handleError = (error, res) => {
   res.status(500).json({ error: error.message || 'Internal Server Error' });
 };
 
-// Configurazione di multer per salvare le immagini nella cartella esistente
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadPath = path.join(__dirname, '../src/assets/imagines');
@@ -104,8 +101,6 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-
-app.use(express.json());
 
 app.post('/products', upload.single('immagine'), async (req, res) => {
   const { nome, marca, categoria, prezzo, descrizione, data_messa_in_vendita } = req.body;
@@ -237,40 +232,14 @@ app.post('/login', async (req, res) => {
 
     if (match) {
       const token = jwt.sign({ userId: user.id, username: user.username, role: user.tipo }, 'your_secret_key', { expiresIn: '1h' });
-      res.json({ token, userId: user.id, username: user.username, userRole: user.tipo }); // Includi l'ID dell'utente nella risposta
-      console.log('Login response:', { token, userId: user.id, username: user.username, userRole: user.tipo });
+      res.json({ token, username: user.username, userRole: user.tipo });
+      console.log('Login response:', { token, username: user.username, userRole: user.tipo });
     } else {
       res.status(401).json({ message: 'Credenziali non valide' });
     }
   } catch (error) {
     console.error('Errore durante il login', error);
     res.status(500).json({ message: 'Errore interno server' });
-  }
-});
-
-
-app.get('/users', async (req, res) => {
-  try {
-    const [results] = await pool.query('SELECT * FROM Utenti');
-    res.status(200).json(results);
-  } catch (error) {
-    console.error("Failed to fetch users:", error);
-    res.status(500).json({ error: 'Database operation failed' });
-  }
-});
-
-app.get('/users/:id', async (req, res) => {
-  const { id } = req.params;
-  const query = 'SELECT * FROM Utenti WHERE id = ?';
-  try {
-    const [results] = await pool.query(query, [id]);
-    if (results.length === 0) {
-      res.status(404).json({ message: 'Utente non trovato' });
-    } else {
-      res.status(200).json(results[0]);
-    }
-  } catch (error) {
-    handleError(error, res);
   }
 });
 
@@ -309,6 +278,30 @@ app.post('/acquista', async (req, res) => {
   } catch (error) {
     console.error('Errore durante l\'acquisto: ' + error.message);
     res.status(500).json({ error: 'Errore interno server' });
+  }
+});
+
+app.get('/users', async (req, res) => {
+  try {
+    const [results] = await pool.query('SELECT * FROM Utenti');
+    res.status(200).json(results);
+  } catch (error) {
+    handleError(error, res);
+  }
+});
+
+app.get('/users/:id', async (req, res) => {
+  const { id } = req.params;
+  const query = 'SELECT * FROM Utenti WHERE id = ?';
+  try {
+    const [results] = await pool.query(query, [id]);
+    if (results.length === 0) {
+      res.status(404).json({ message: 'Utente non trovato' });
+    } else {
+      res.status(200).json(results[0]);
+    }
+  } catch (error) {
+    handleError(error, res);
   }
 });
 
