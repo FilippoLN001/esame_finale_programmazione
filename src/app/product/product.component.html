@@ -1,4 +1,4 @@
-<div class="product-container">
+<div class="product-grid">
   <div *ngFor="let product of products" class="product" (click)="redirectToProductDetail(product.id)">
     <h3>{{ product.nome }}</h3>
     <img [src]="'/' + product.immagine" alt="{{ product.nome }}">

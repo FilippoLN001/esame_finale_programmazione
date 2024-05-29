@@ -1,9 +1,9 @@
 /* Contenitore esterno per i prodotti */
-.product-container {
-    display: flex;
-    gap: 5em;
-    overflow-x: auto;
-    padding: 20px;
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 0.5fr);
+  gap: 20px;
+  margin: 20px;
 }
 
 /* Stile generale per il dettaglio del prodotto */

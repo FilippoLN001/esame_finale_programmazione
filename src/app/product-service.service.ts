@@ -2,19 +2,32 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Prodotto } from '../app/product-model/product-model.module';
+import { Prodotto, User } from '../app/product-model/product-model.module';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
   private apiUrl = 'http://localhost:3000/products';
+  private apriUrluser = 'http://localhost:3000/users';
 
   constructor(private http: HttpClient) {}
 
   getProducts(): Observable<Prodotto[]> {
     return this.http.get<Prodotto[]>(`${this.apiUrl}`);
   }
+
+  
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apriUrluser}`);
+  }
+  getUserById(id: number): Observable<User> {
+    const url = `${this.apriUrluser}/${id}`;
+    return this.http.get<User>(url).pipe(
+      catchError(this.handleError)
+    );
+  }
+
 
   getProductById(id: number): Observable<Prodotto> {
     const url = `${this.apiUrl}/${id}`;

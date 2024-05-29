@@ -26,6 +26,56 @@ const pool = mysql.createPool({
   queueLimit: 0
 });
 
+const createTables = async () => {
+  try {
+    const createProdottiTable = `
+    CREATE TABLE IF NOT EXISTS Prodotti (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        nome VARCHAR(255) NOT NULL,
+        marca VARCHAR(255) NOT NULL,
+        categoria ENUM('tablet', 'monitor', 'smartphone','pc','laptop','tastiera','mouse','componenti_pc') NOT NULL,
+        prezzo INT NOT NULL,
+        immagine VARCHAR(255) NOT NULL, 
+        descrizione VARCHAR(255),
+        data_messa_in_vendita DATE NOT NULL
+    );`;
+
+    const createUtentiTable = `
+    CREATE TABLE IF NOT EXISTS Utenti (
+      id INT AUTO_INCREMENT PRIMARY KEY, 
+      tipo ENUM('Admin', 'User') NOT NULL,
+      nome VARCHAR(255) NOT NULL,
+      cognome VARCHAR(255) NOT NULL,
+      username VARCHAR(255) NOT NULL UNIQUE,
+      email VARCHAR(255) NOT NULL UNIQUE,
+      password VARCHAR(255) NOT NULL,
+      token VARCHAR(512) 
+  );`;
+
+    const createAcquistoTable = `
+    CREATE TABLE IF NOT EXISTS Acquisto (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        id_prodotto INT NOT NULL,
+        id_utente INT NOT NULL,
+        FOREIGN KEY (id_prodotto) REFERENCES Prodotti(id),
+        FOREIGN KEY (id_utente) REFERENCES Utenti(id)
+    );`;
+
+    await pool.query(createProdottiTable);
+    console.log('Tabella Prodotti creata con successo');
+
+    await pool.query(createUtentiTable);
+    console.log('Tabella Utenti creata con successo');
+
+    await pool.query(createAcquistoTable);
+    console.log('Tabella Acquisto creata con successo');
+  } catch (err) {
+    console.error('Errore durante la creazione delle tabelle: ' + err.message);
+  }
+};
+
+createTables();
+
 app.use((req, res, next) => {
   res.setHeader("Content-Security-Policy", "default-src 'self'; font-src 'self' http://localhost:3000;");
   next();
@@ -187,14 +237,40 @@ app.post('/login', async (req, res) => {
 
     if (match) {
       const token = jwt.sign({ userId: user.id, username: user.username, role: user.tipo }, 'your_secret_key', { expiresIn: '1h' });
-      res.json({ token, username: user.username, userRole: user.tipo });
-      console.log('Login response:', { token, username: user.username, userRole: user.tipo });
+      res.json({ token, userId: user.id, username: user.username, userRole: user.tipo }); // Includi l'ID dell'utente nella risposta
+      console.log('Login response:', { token, userId: user.id, username: user.username, userRole: user.tipo });
     } else {
       res.status(401).json({ message: 'Credenziali non valide' });
     }
   } catch (error) {
     console.error('Errore durante il login', error);
     res.status(500).json({ message: 'Errore interno server' });
+  }
+});
+
+
+app.get('/users', async (req, res) => {
+  try {
+    const [results] = await pool.query('SELECT * FROM Utenti');
+    res.status(200).json(results);
+  } catch (error) {
+    console.error("Failed to fetch users:", error);
+    res.status(500).json({ error: 'Database operation failed' });
+  }
+});
+
+app.get('/users/:id', async (req, res) => {
+  const { id } = req.params;
+  const query = 'SELECT * FROM Utenti WHERE id = ?';
+  try {
+    const [results] = await pool.query(query, [id]);
+    if (results.length === 0) {
+      res.status(404).json({ message: 'Utente non trovato' });
+    } else {
+      res.status(200).json(results[0]);
+    }
+  } catch (error) {
+    handleError(error, res);
   }
 });
 

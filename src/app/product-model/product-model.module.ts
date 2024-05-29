@@ -20,3 +20,14 @@ export interface Prodotto {
   descrizione : string;
   data_messa_in_vendita: Date;
 }
+
+export interface User{
+  id: number;
+  tipo: string;
+  nome: string;
+  cognome: string;
+  username: string;
+  email: string;
+  password: string;
+  token: string;
+}

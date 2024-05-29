@@ -6,7 +6,6 @@
     <li *ngIf="!authService.isLoggedIn()"><a routerLink="/login">Login</a></li>
     <li *ngIf="!authService.isLoggedIn()"><a routerLink="/signup">Register</a></li>
     <!-- Mostra il link di logout solo se l'utente è loggato -->
-    <li *ngIf="authService.isLoggedIn()"> Welcome, {{username}}</li>
     <li *ngIf="authService.isLoggedIn()"><a (click)="logout()">Logout</a></li>
     <!-- Mostra il link "Admin Dashboard" solo se l'utente è un Admin -->
     <li *ngIf="authService.isAdmin() && authService.isLoggedIn()"><a routerLink="/admin-dashboard">Admin Dashboard</a></li>
