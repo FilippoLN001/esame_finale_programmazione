@@ -10,10 +10,12 @@
     <!-- Mostra il link "Admin Dashboard" solo se l'utente è un Admin -->
     <li *ngIf="authService.isAdmin() && authService.isLoggedIn()"><a routerLink="/admin-dashboard">Admin Dashboard</a></li>
   </ul>
-  <button class="search" (click)="toggleSearch()">Search</button>
-  <input #searchBox type="text" class="search-box" [(ngModel)]="searchText" *ngIf="showSearch" placeholder="Search...">
-  <button class="icon-button" (click)="incrementBadge()">
-    <!-- <p-badge [value]="badgeCount"></p-badge> -->
-    <i class="pi pi-cart-arrow-down" style="font-size: 1.5rem;"></i>
-  </button>
+  <div class="search-container">
+    <button class="search" (click)="toggleSearch()">Search</button>
+    <input #searchBox type="text" class="search-box" [(ngModel)]="searchText" *ngIf="showSearch" placeholder="Search...">
+    <button class="icon-button" (click)="incrementBadge()">
+      <!-- <p-badge [value]="badgeCount"></p-badge> -->
+      <i class="pi pi-cart-arrow-down" style="font-size: 1.5rem;"></i>
+    </button>
+  </div>
 </nav>

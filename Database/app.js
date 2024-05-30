@@ -305,6 +305,24 @@ app.get('/users/:id', async (req, res) => {
   }
 });
 
+app.get('/products/search', async (req, res) => {
+  const { query } = req.query;
+
+  try {
+    const searchQuery = `
+      SELECT * FROM Prodotti 
+      WHERE nome LIKE ? 
+      OR marca LIKE ? 
+      OR categoria LIKE ?
+    `;
+    const [results] = await pool.query(searchQuery, [`%${query}%`, `%${query}%`, `%${query}%`]);
+    res.status(200).json(results);
+  } catch (error) {
+    console.error('Errore durante la ricerca:', error);
+    res.status(500).json({ message: 'Errore durante la ricerca' });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });

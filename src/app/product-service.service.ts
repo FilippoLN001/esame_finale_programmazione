@@ -44,6 +44,13 @@ export class ProductService {
     );
   }
 
+  searchProducts(searchText: string): Observable<Prodotto[]> {
+    const url = `${this.apiUrl}/search?query=${searchText}`;
+    return this.http.get<Prodotto[]>(url).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(error: any): Observable<never> {
     console.error('An error occurred:', error);
     return throwError('Something bad happened; please try again later.');

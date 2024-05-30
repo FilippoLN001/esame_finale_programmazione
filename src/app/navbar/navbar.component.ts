@@ -42,6 +42,10 @@ export class NavbarComponent implements OnInit {
     }
   }
 
+  search(): void {
+    this.router.navigate(['/dashboard'], { queryParams: { search: this.searchText } });
+  }
+
   navigateTo(route: string) {
     this.router.navigate([route]);
   }
