@@ -12,6 +12,7 @@ import { Prodotto } from '../../../product-model/product-model.module';
 export class ProducteditComponent implements OnInit {
   productForm!: FormGroup;
   selectedFile?: File;  // Use optional for better handling of undefined state
+  currentImagePath: string = ''; // Store the current image path
 
   constructor(
     private fb: FormBuilder,
@@ -44,11 +45,12 @@ export class ProducteditComponent implements OnInit {
     }
     this.productService.getProductById(id).subscribe(product => {
       this.productForm.patchValue(product);
+      this.currentImagePath = product.immagine;  // Save the current image path
     }, error => {
       console.error('Failed to load product:', error);
     });
   }
-  
+
   onFileSelected(event: Event) {
     const element = event.target as HTMLInputElement;
     if (element.files && element.files.length > 0) {
@@ -63,15 +65,17 @@ export class ProducteditComponent implements OnInit {
         alert('Product ID is missing');
         return;
       }
-  
+
       const formData = new FormData();
       if (this.selectedFile) {
         formData.append('immagine', this.selectedFile);
+      } else {
+        formData.append('immagine', this.currentImagePath);  // Use the existing image path
       }
       Object.keys(this.productForm.value).forEach(key => {
         formData.append(key, this.productForm.value[key]);
       });
-  
+
       this.productService.updateProduct(productId, formData).subscribe({
         next: () => {
           console.log('Product updated successfully.');
@@ -86,6 +90,4 @@ export class ProducteditComponent implements OnInit {
       alert('Form is not valid');
     }
   }
-  
-  
 }

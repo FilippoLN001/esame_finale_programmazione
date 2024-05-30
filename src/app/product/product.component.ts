@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ProductService } from '../product-service.service';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Prodotto } from '../product-model/product-model.module';
 
 @Component({
@@ -10,9 +11,10 @@ import { Prodotto } from '../product-model/product-model.module';
 })
 export class ProductComponent implements OnInit {
   @Input() listaProdotti: Prodotto[] = [];
-  products: any;
+  products: any[] = [];
+  filteredProducts: any[] = [];
 
-  constructor(private productService: ProductService, private router: Router) {}
+  constructor(private route: ActivatedRoute,private productService: ProductService, private router: Router) {}
 
   ngOnInit() {
     this.productService.getProducts().subscribe(
@@ -25,6 +27,14 @@ export class ProductComponent implements OnInit {
         console.error('Errore durante il recupero dei prodotti:', error);
       }
     );
+
+    this.route.queryParams.subscribe(params => {
+      const search = params['search'] || '';
+      this.productService.getProducts().subscribe(products => {
+        this.products = products;
+        this.filterProducts(search);
+      });
+    });
   }
 
   logImagePaths() {
@@ -35,5 +45,17 @@ export class ProductComponent implements OnInit {
 
   redirectToProductDetail(productId: number) {
     this.router.navigate(['/products', productId]);
+  }
+
+  filterProducts(search: string) {
+    if (search) {
+      this.filteredProducts = this.products.filter(product => 
+        product.nome.toLowerCase().includes(search.toLowerCase()) ||
+        product.categoria.toLowerCase().includes(search.toLowerCase()) ||
+        product.marca.toLowerCase().includes(search.toLowerCase())
+      );
+    } else {
+      this.filteredProducts = this.products;
+    }
   }
 }

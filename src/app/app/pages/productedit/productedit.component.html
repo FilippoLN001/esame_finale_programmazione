@@ -1,31 +1,46 @@
-<!-- productedit.component.html -->
-<form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="product-form">
+<div class="container">
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="product-form">
     <div class="form-group">
-      <label for="nome">Name:</label>
-      <input type="text" pInputText formControlName="nome" />
-    </div>
-    <div class="form-group">
-      <label for="marca">Brand:</label>
-      <input type="text" pInputText formControlName="marca" />
+      <label>Nome</label>
+      <input formControlName="nome" class="form-control" />
     </div>
     <div class="form-group">
-      <label for="categoria">Category:</label>
-      <input type="text" pInputText formControlName="categoria" />
+      <label>Marca</label>
+      <input formControlName="marca" class="form-control" />
     </div>
     <div class="form-group">
-      <label for="prezzo">Price:</label>
-      <input type="number" pInputText formControlName="prezzo" />
+      <label>Categoria</label>
+      <select formControlName="categoria" class="form-control">
+        <option value="tablet">Tablet</option>
+        <option value="monitor">Monitor</option>
+        <option value="smartphone">Smartphone</option>
+        <option value="pc">PC</option>
+        <option value="laptop">Laptop</option>
+        <option value="tastiera">Tastiera</option>
+        <option value="mouse">Mouse</option>
+        <option value="componenti_pc">Componenti PC</option>
+      </select>
     </div>
     <div class="form-group">
-      <label for="descrizione">Description:</label>
-      <textarea pInputTextarea formControlName="descrizione"></textarea>
+      <label>Prezzo</label>
+      <input formControlName="prezzo" class="form-control" />
     </div>
     <div class="form-group">
-      <label for="data_messa_in_vendita">Sale Date:</label>
-      <p-calendar [showIcon]="true" formControlName="data_messa_in_vendita"></p-calendar>
+      <label>Immagine</label>
+      <input type="file" (change)="onFileSelected($event)" class="form-control" />
+      <div *ngIf="currentImagePath">
+        <img [src]="currentImagePath" alt="Current Image" class="current-image">
+      </div>
     </div>
-    <div class="form-group submit-button">
-      <p-button type="submit" label="Save Changes"></p-button>
+    <div class="form-group">
+      <label>Descrizione</label>
+      <textarea formControlName="descrizione" class="form-control"></textarea>
     </div>
-  </form>
   
+    <div class="form-group">
+      <label>Data di messa in vendita</label>
+      <input formControlName="data_messa_in_vendita" type="date" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Aggiorna Prodotto</button>
+  </form>
+</div>

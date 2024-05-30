@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class AddItemComponent {
   productForm: FormGroup;
+  router: any;
 
   constructor(
     private fb: FormBuilder,
@@ -38,7 +39,7 @@ export class AddItemComponent {
 
   addProduct() {
     if (this.productForm.invalid) {
-      return;
+      return  this.router.navigate('/dashboard');;
     }
 
     const formData: FormData = new FormData();

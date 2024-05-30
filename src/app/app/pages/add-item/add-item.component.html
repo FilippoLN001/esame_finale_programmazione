@@ -1,44 +1,43 @@
 <div class="container">
-    <form [formGroup]="productForm" (ngSubmit)="addProduct()">
-      <div class="form-group">
-        <label>Nome</label>
-        <input formControlName="nome" class="form-control" />
-      </div>
-      <div class="form-group">
-        <label>Marca</label>
-        <input formControlName="marca" class="form-control" />
-      </div>
-      <div class="form-group">
-        <label>Categoria</label>
-        <select formControlName="categoria" class="form-control">
-          <option value="tablet">Tablet</option>
-          <option value="monitor">Monitor</option>
-          <option value="smartphone">Smartphone</option>
-          <option value="pc">PC</option>
-          <option value="laptop">Laptop</option>
-          <option value="tastiera">Tastiera</option>
-          <option value="mouse">Mouse</option>
-          <option value="componenti_pc">Componenti PC</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Prezzo</label>
-        <input formControlName="prezzo" class="form-control" />
-      </div>
-      <div class="form-group">
-        <label>Immagine</label>
-        <input type="file" (change)="onFileChange($event)" class="form-control" />
-      </div>
-      <div class="form-group">
-        <label>Descrizione</label>
-        <textarea formControlName="descrizione" class="form-control"></textarea>
-      </div>
-    
-      <div class="form-group">
-        <label>Data di messa in vendita</label>
-        <input formControlName="data_messa_in_vendita" type="date" class="form-control" />
-      </div>
-      <button type="submit" class="btn btn-primary">Aggiungi Prodotto</button>
-    </form>
-  </div>
+  <form [formGroup]="productForm" (ngSubmit)="addProduct()" class="product-form">
+    <div class="form-group">
+      <label>Nome</label>
+      <input formControlName="nome" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Marca</label>
+      <input formControlName="marca" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Categoria</label>
+      <select formControlName="categoria" class="form-control">
+        <option value="tablet">Tablet</option>
+        <option value="monitor">Monitor</option>
+        <option value="smartphone">Smartphone</option>
+        <option value="pc">PC</option>
+        <option value="laptop">Laptop</option>
+        <option value="tastiera">Tastiera</option>
+        <option value="mouse">Mouse</option>
+        <option value="componenti_pc">Componenti PC</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Prezzo</label>
+      <input formControlName="prezzo" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Immagine</label>
+      <input type="file" (change)="onFileChange($event)" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label>Descrizione</label>
+      <textarea formControlName="descrizione" class="form-control"></textarea>
+    </div>
   
+    <div class="form-group">
+      <label>Data di messa in vendita</label>
+      <input formControlName="data_messa_in_vendita" type="date" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Aggiungi Prodotto</button>
+  </form>
+</div>
