@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ProductService } from '../../../product-service.service';
 import { Prodotto } from '../../../product-model/product-model.module';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CartService } from '../../../cart.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -13,13 +14,15 @@ export class ProductDetailComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cartService: CartService, // Inietta il servizio del carrello
+    private router: Router // Inietta il servizio Router
   ) {}
 
   ngOnInit() {
     this.getProduct_detailById();
   }
-  
+
   getProduct_detailById() {
     const idString = this.route.snapshot.paramMap.get('id');
     if (idString !== null) {
@@ -30,17 +33,16 @@ export class ProductDetailComponent implements OnInit {
         },
         (error) => {
           console.error('Errore durante il recupero del prodotto:', error);
-          // Considera di mostrare un messaggio di errore nell'UI
         }
       );
     } else {
       console.error('ID non trovato nella route.');
     }
   }
-  
 
   addToCart() {
-    // Implementa la logica per aggiungere il prodotto al carrello
+    this.cartService.addToCart(this.product);
     console.log('Aggiunto al carrello:', this.product);
+    this.router.navigate(['/dashboard']); // Naviga alla dashboard
   }
 }

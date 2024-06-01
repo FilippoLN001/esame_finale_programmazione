@@ -2,20 +2,28 @@
   <a routerLink="/dashboard">TechHive</a>
   <ul class="list">
     <li><a routerLink="/products">Products</a></li>
-    <!-- Mostra questi link solo se l'utente non è loggato -->
     <li *ngIf="!authService.isLoggedIn()"><a routerLink="/login">Login</a></li>
     <li *ngIf="!authService.isLoggedIn()"><a routerLink="/signup">Register</a></li>
-    <!-- Mostra il link di logout solo se l'utente è loggato -->
     <li *ngIf="authService.isLoggedIn()"><a (click)="logout()">Logout</a></li>
-    <!-- Mostra il link "Admin Dashboard" solo se l'utente è un Admin -->
     <li *ngIf="authService.isAdmin() && authService.isLoggedIn()"><a routerLink="/admin-dashboard">Admin Dashboard</a></li>
   </ul>
   <div class="search-container">
     <button class="search" (click)="toggleSearch()">Search</button>
     <input #searchBox type="text" class="search-box" [(ngModel)]="searchText" *ngIf="showSearch" placeholder="Search...">
-    <button class="icon-button" (click)="incrementBadge()">
-      <!-- <p-badge [value]="badgeCount"></p-badge> -->
-      <i class="pi pi-cart-arrow-down" style="font-size: 1.5rem;"></i>
-    </button>
+    <div class="cart-container">
+      <button class="icon-button" (click)="toggleCartDropdown()">
+        <i class="pi pi-cart-arrow-down" style="font-size: 1.5rem;"></i>
+        <span *ngIf="cartProducts.length > 0" class="cart-badge">{{ cartProducts.length }}</span>
+      </button>
+      <div *ngIf="showCartDropdown" class="cart-dropdown">
+        <div *ngFor="let product of cartProducts" class="cart-item">
+          <img [src]="product.immagine" alt="{{ product.nome }}" class="cart-item-image">
+          <div class="cart-item-info">
+            <h4>{{ product.nome }}</h4>
+            <p>{{ product.prezzo | currency }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>

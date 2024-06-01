@@ -22,6 +22,7 @@ nav {
   text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   color: white;
   font-size: 16px;
+  z-index: 100;
 }
 
 nav.mask {
@@ -170,4 +171,59 @@ img {
 
 .icon-button:hover {
   color: #c5c4c4;
+}
+
+/* Badge del carrello */
+.cart-badge {
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 12px;
+}
+
+/* Container del carrello */
+.cart-container {
+  position: relative;
+  z-index: 1000; /* Assicura che il container del carrello sia sopra altri elementi */
+}
+
+/* Menu a tendina del carrello */
+.cart-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: red;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 200px;
+  z-index: 1001; /* Assicura che il menu a tendina sia sopra altri elementi */
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.cart-item-image {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.cart-item-info {
+  flex: 1;
+}
+
+/* Imposta il box-sizing per tutti gli elementi */
+* {
+  box-sizing: border-box;
 }

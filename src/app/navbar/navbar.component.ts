@@ -1,6 +1,8 @@
 import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { CartService } from '../cart.service';
+import { Prodotto } from '../product-model/product-model.module';
 
 @Component({
   selector: 'app-navbar',
@@ -12,10 +14,12 @@ export class NavbarComponent implements OnInit {
   badgeCount: number = 0;
   username: string = '';
 
-  constructor(private router: Router, public authService: AuthService) {}
+  constructor(private router: Router, public authService: AuthService,private cartService: CartService) {}
 
   @ViewChild('searchBox') searchBox!: ElementRef;
   showSearch: boolean = false;
+  cartProducts: Prodotto[] = [];
+  showCartDropdown = false;
 
   ngOnInit() {
     this.authService.getUsernameObservable().subscribe((username: string) => {
@@ -28,6 +32,11 @@ export class NavbarComponent implements OnInit {
     if (this.authService.isLoggedIn()) {
       this.authService.fetchUserDetails();
     }
+
+    this.cartProducts = this.cartService.getCartProducts();
+    this.cartService.cartUpdated.subscribe((products: Prodotto[]) => {
+      this.cartProducts = products;
+    });
   }
 
   toggleSearch(): void {
@@ -57,5 +66,9 @@ export class NavbarComponent implements OnInit {
 
   incrementBadge() {
     this.badgeCount++;
+  }
+
+  toggleCartDropdown() {
+    this.showCartDropdown = !this.showCartDropdown;
   }
 }
