@@ -1,8 +1,11 @@
+// navbar.component.ts
 import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { CartService } from '../cart.service';
 import { Prodotto } from '../product-model/product-model.module';
+import { MenuItem } from 'primeng/api';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-navbar',
@@ -11,31 +14,32 @@ import { Prodotto } from '../product-model/product-model.module';
 })
 export class NavbarComponent implements OnInit {
   searchText: string = '';
-  badgeCount: number = 0;
   username: string = '';
-
-  constructor(private router: Router, public authService: AuthService,private cartService: CartService) {}
+  showSearch: boolean = false;
+  showCartMenu: boolean = false;
+  cartMenuItems: MenuItem[] = [];
 
   @ViewChild('searchBox') searchBox!: ElementRef;
-  showSearch: boolean = false;
-  cartProducts: Prodotto[] = [];
-  showCartDropdown = false;
+
+  constructor(
+    private router: Router,
+    public authService: AuthService,
+    public cartService: CartService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit() {
     this.authService.getUsernameObservable().subscribe((username: string) => {
-      console.log('Username from observable:', username);
       this.username = username;
-      console.log('Username set in component:', this.username);
     });
 
-    // Fetch user details if token exists
     if (this.authService.isLoggedIn()) {
       this.authService.fetchUserDetails();
     }
 
-    this.cartProducts = this.cartService.getCartProducts();
-    this.cartService.cartUpdated.subscribe((products: Prodotto[]) => {
-      this.cartProducts = products;
+    this.updateCartMenu();
+    this.cartService.cartUpdated.subscribe(() => {
+      this.updateCartMenu();
     });
   }
 
@@ -64,11 +68,28 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  incrementBadge() {
-    this.badgeCount++;
+  toggleCartMenu() {
+    this.showCartMenu = !this.showCartMenu;
   }
 
-  toggleCartDropdown() {
-    this.showCartDropdown = !this.showCartDropdown;
+  updateCartMenu() {
+    const products = this.cartService.getCartProducts();
+    this.cartMenuItems = products.map((product: Prodotto) => {
+      return {
+        label: `${product.nome} - ${product.prezzo}`,
+        icon: 'pi pi-fw pi-cart',
+        command: () => {
+          this.router.navigate(['/products', product.id]);
+        }
+      };
+    });
+  }
+
+  checkout() {
+    this.cartService.clearCart();
+    this.updateCartMenu();
+    this.snackBar.open('Ordine effettuato con successo!', 'Chiudi', {
+      duration: 3000,
+    });
   }
 }
