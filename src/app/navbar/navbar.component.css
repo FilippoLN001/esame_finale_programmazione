@@ -1,13 +1,4 @@
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  min-height: 20vh;
-  font-size: 0;
-}
-
+/* Stili per la navigazione */
 nav {
   top: 0;
   left: 0;
@@ -15,7 +6,7 @@ nav {
   padding: 16px 20px 30px 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Distribuisci spazio tra elementi */
+  justify-content: space-between;
   transition: 0.3s ease-out;
   backdrop-filter: blur(8px) brightness(1.2);
   -webkit-backdrop-filter: blur(8px) brightness(1.2);
@@ -29,23 +20,6 @@ nav.mask {
   top: 150px;
   mask-image: linear-gradient(black 70%, transparent);
   -webkit-mask-image: linear-gradient(black 70%, transparent);
-}
-
-nav.mask-pattern {
-  top: 300px;
-  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12.21 10.57'%3E%3Cpath fill='%23ffffff' d='M6.1 0h6.11L9.16 5.29 6.1 10.57 3.05 5.29 0 0h6.1z'/%3E%3C/svg%3E"), linear-gradient(black calc(100% - 30px), transparent calc(100% - 30px));
-  mask-size: auto 30px, 100% 100%;
-  mask-repeat: repeat-x, no-repeat;
-  mask-position: left bottom, top left;
-  
-  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12.21 10.57'%3E%3Cpath fill='%23ffffff' d='M6.1 0h6.11L9.16 5.29 6.1 10.57 3.05 5.29 0 0h6.1z'/%3E%3C/svg%3E"), linear-gradient(black calc(100% - 30px), transparent calc(100% - 30px));
-  -webkit-mask-size: auto 30px, 100% 100%;
-  -webkit-mask-repeat: repeat-x, no-repeat;
-  -webkit-mask-position: left bottom, top left;
-}
-
-nav.is-hidden {
-  transform: translateY(-100%);
 }
 
 a {
@@ -81,7 +55,7 @@ a:focus {
 .search-container {
   display: flex;
   align-items: center;
-  justify-content: flex-end; /* Allinea gli elementi alla fine (destra) */
+  justify-content: flex-end;
   flex: 1;
 }
 
@@ -186,44 +160,83 @@ img {
 }
 
 /* Container del carrello */
+/* Container per la lista degli ordini */
 .cart-container {
-  position: relative;
-  z-index: 1000; /* Assicura che il container del carrello sia sopra altri elementi */
+  position: relative; /* Posizionamento relativo per contenere il menu a tendina */
 }
 
 /* Menu a tendina del carrello */
 .cart-dropdown {
   position: absolute;
-  top: 100%;
+  top: 100%; /* Posiziona subito sotto il pulsante del carrello */
   right: 0;
-  background-color: red;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 200px;
-  z-index: 1001; /* Assicura che il menu a tendina sia sopra altri elementi */
+  background-color: white; /* Sfondo bianco per la lista degli ordini */
+  border: 1px solid #ccc; /* Bordo leggero per la lista */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Aggiunge un'ombra per risalto */
+  width: 300px; /* Larghezza fissa della lista degli ordini */
+  z-index: 1001; /* Assicura che sia sopra altri elementi */
+  max-height: 300px; /* Altezza massima della lista degli ordini */
+  overflow-y: auto; /* Aggiunge uno scroll verticale se necessario */
 }
 
+/* Elementi della lista degli ordini */
 .cart-item {
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 10px 16px;
   border-bottom: 1px solid #ccc;
 }
 
 .cart-item:last-child {
-  border-bottom: none;
+  border-bottom: none; /* Rimuove il bordo dall'ultimo elemento */
 }
 
-.cart-item-image {
-  width: 40px;
-  height: 40px;
+/* Immagini degli ordini */
+.cart-item img {
+  width: 50px;
+  height: 50px;
   margin-right: 10px;
 }
 
+/* Informazioni sugli ordini */
 .cart-item-info {
   flex: 1;
 }
 
-/* Imposta il box-sizing per tutti gli elementi */
-* {
-  box-sizing: border-box;
+.cart-item-info h4 {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.cart-item-info p {
+  margin: 5px 0 0;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Bottone per rimuovere gli ordini */
+.cart-item button {
+  background-color: #dc3545; /* Colore di sfondo del bottone di rimozione */
+  color: white; /* Colore del testo del bottone di rimozione */
+  border: none; /* Rimuove il bordo */
+  padding: 5px 10px;
+  border-radius: 4px; /* Aggiunge gli angoli arrotondati */
+  cursor: pointer; /* Cambia il cursore quando si passa sopra */
+}
+
+.cart-item button:hover {
+  background-color: #c82333; /* Colore di sfondo al passaggio del mouse */
+}
+
+/* Badge del carrello */
+.cart-badge {
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 12px;
 }

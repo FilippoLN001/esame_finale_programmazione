@@ -18,6 +18,8 @@ import { TableModule } from 'primeng/table';
 import { CalendarModule } from 'primeng/calendar';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ToastModule } from 'primeng/toast';
+import { OrderListModule } from 'primeng/orderlist';
+import {PanelMenuModule} from 'primeng/panelmenu'
 
 
 
@@ -36,12 +38,12 @@ import { ProductDetailComponent } from './pages/product-detail/product-detail.co
 import { ProducteditComponent } from './pages/productedit/productedit.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { SignupComponent } from './pages/signup/signup.component';
+import { OrderListComponent } from '../order-list/order-list.component';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '../auth/auth.interceptor';
 import { SigninComponent } from './pages/signin/signin.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
-import { SideBarComponent } from '../side-bar/side-bar.component';
 import { AddItemComponent } from './pages/add-item/add-item.component';
 
 
@@ -61,8 +63,8 @@ function tokenGetter() {
     FooterComponent,
     SignupComponent,
     SigninComponent,
-    SideBarComponent,
     AddItemComponent,
+    OrderListComponent,
     
     AdminDashboardComponent
   ],
@@ -87,6 +89,8 @@ function tokenGetter() {
     CalendarModule,
     ConfirmPopupModule,
     ToastModule,
+    OrderListModule,
+    PanelMenuModule,
     // PrimeIcons,
     BadgeModule,
 

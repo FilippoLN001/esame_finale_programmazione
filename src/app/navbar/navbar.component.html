@@ -1,7 +1,6 @@
 <nav class="mask">
   <a routerLink="/dashboard">TechHive</a>
   <ul class="list">
-    <li><a routerLink="/products">Products</a></li>
     <li *ngIf="!authService.isLoggedIn()"><a routerLink="/login">Login</a></li>
     <li *ngIf="!authService.isLoggedIn()"><a routerLink="/signup">Register</a></li>
     <li *ngIf="authService.isLoggedIn()"><a (click)="logout()">Logout</a></li>
@@ -9,21 +8,14 @@
   </ul>
   <div class="search-container">
     <button class="search" (click)="toggleSearch()">Search</button>
-    <input #searchBox type="text" class="search-box" [(ngModel)]="searchText" *ngIf="showSearch" placeholder="Search...">
+    <input #searchBox type="text" class="search-box" [(ngModel)]="searchText" (keydown.enter)="search()" *ngIf="showSearch" placeholder="Search...">
     <div class="cart-container">
-      <button class="icon-button" (click)="toggleCartDropdown()">
+      <button class="icon-button" (click)="toggleCartMenu()">
         <i class="pi pi-cart-arrow-down" style="font-size: 1.5rem;"></i>
-        <span *ngIf="cartProducts.length > 0" class="cart-badge">{{ cartProducts.length }}</span>
+        <span *ngIf="cartService.getCartProducts().length > 0" class="cart-badge">{{ cartService.getCartProducts().length }}</span>
       </button>
-      <div *ngIf="showCartDropdown" class="cart-dropdown">
-        <div *ngFor="let product of cartProducts" class="cart-item">
-          <img [src]="product.immagine" alt="{{ product.nome }}" class="cart-item-image">
-          <div class="cart-item-info">
-            <h4>{{ product.nome }}</h4>
-            <p>{{ product.prezzo | currency }}</p>
-          </div>
-        </div>
-      </div>
+      <p-panelMenu *ngIf="showCartMenu" [model]="cartMenuItems" [style]="{ 'width': '300px' }"></p-panelMenu>
+      <button *ngIf="showCartMenu" class="btn btn-primary" (click)="checkout()">Checkout</button>
     </div>
   </div>
 </nav>

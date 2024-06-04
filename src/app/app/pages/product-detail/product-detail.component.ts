@@ -41,7 +41,7 @@ export class ProductDetailComponent implements OnInit {
   }
 
   addToCart() {
-    this.cartService.addToCart(this.product);
+    this.cartService.addProductToCart(this.product);
     console.log('Aggiunto al carrello:', this.product);
     this.router.navigate(['/dashboard']); // Naviga alla dashboard
   }

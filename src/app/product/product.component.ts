@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ProductService } from '../product-service.service';
-import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Prodotto } from '../product-model/product-model.module';
 
 @Component({
@@ -11,34 +10,34 @@ import { Prodotto } from '../product-model/product-model.module';
 })
 export class ProductComponent implements OnInit {
   @Input() listaProdotti: Prodotto[] = [];
-  products: any[] = [];
-  filteredProducts: any[] = [];
+  products: Prodotto[] = [];
+  filteredProducts: Prodotto[] = [];
 
-  constructor(private route: ActivatedRoute,private productService: ProductService, private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private productService: ProductService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.productService.getProducts().subscribe(
       (prodotti: Prodotto[]) => {
-        this.listaProdotti = prodotti;
         this.products = prodotti;
+        this.filteredProducts = prodotti;
         this.logImagePaths(); // Log dei percorsi delle immagini
+        this.route.queryParams.subscribe(params => {
+          const search = params['search'] || '';
+          this.filterProducts(search);
+        });
       },
-      (error) => {
+      error => {
         console.error('Errore durante il recupero dei prodotti:', error);
       }
     );
-
-    this.route.queryParams.subscribe(params => {
-      const search = params['search'] || '';
-      this.productService.getProducts().subscribe(products => {
-        this.products = products;
-        this.filterProducts(search);
-      });
-    });
   }
 
   logImagePaths() {
-    this.products.forEach((product: { immagine: any; }) => {
+    this.products.forEach(product => {
       console.log('Percorso immagine:', product.immagine);
     });
   }
@@ -49,7 +48,7 @@ export class ProductComponent implements OnInit {
 
   filterProducts(search: string) {
     if (search) {
-      this.filteredProducts = this.products.filter(product => 
+      this.filteredProducts = this.products.filter(product =>
         product.nome.toLowerCase().includes(search.toLowerCase()) ||
         product.categoria.toLowerCase().includes(search.toLowerCase()) ||
         product.marca.toLowerCase().includes(search.toLowerCase())
