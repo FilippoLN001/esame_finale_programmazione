@@ -1,17 +1,25 @@
+<!-- Componente p-table per la visualizzazione dei prodotti in una tabella -->
 <p-table [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
+    
+    <!-- Template per la didascalia della tabella -->
     <ng-template pTemplate="caption">
         <div class="flex align-items-center justify-content-between">
+            <!-- Titolo della tabella -->
             Products
             <div>
+                <!-- Bottone per ricaricare la pagina -->
                 <p-button class="button-refresh" icon="pi pi-refresh" (click)="refreshPage()"></p-button>
+                <!-- Bottone per aggiungere un nuovo prodotto -->
                 <p-button class="button-add" icon="pi pi-plus" label="Aggiungi" (click)="addItem()"></p-button>
             </div>
         </div>
     </ng-template>
+    
+    <!-- Template per l'intestazione della tabella -->
     <ng-template pTemplate="header">
         <tr>
             <th>Id</th>
-            <th>Name</th>
+            <th>Nome</th>
             <th>Categoria</th>
             <th>Prezzo</th>
             <th>Messa in vendita</th>
@@ -19,23 +27,35 @@
             <th></th>
         </tr>
     </ng-template>
+    
+    <!-- Template per il corpo della tabella -->
     <ng-template pTemplate="body" let-product>
         <tr>
+            <!-- Colonna Id prodotto -->
             <td>{{ product.id }}</td>
+            <!-- Colonna Nome prodotto -->
             <td>{{ product.nome }}</td>
+            <!-- Colonna Categoria prodotto -->
             <td>{{ product.categoria }}</td>
+            <!-- Colonna Prezzo prodotto, formattato come valuta -->
             <td>{{ product.prezzo | currency }}</td>
+            <!-- Colonna Data di messa in vendita, formattata come data -->
             <td>{{ product.data_messa_in_vendita | date }}</td>
+            <!-- Colonna bottone Modifica prodotto -->
             <td>
                 <p-button label="Modifica" icon="pi pi-pencil" (click)="editProduct(product.id)"></p-button>
             </td>
+            <!-- Colonna bottone Elimina prodotto -->
             <td>
                 <p-button label="Elimina" icon="pi pi-trash" (click)="deleteProduct(product)" class="p-button-danger"></p-button>
             </td>
         </tr>
     </ng-template>
+    
+    <!-- Template per il riepilogo della tabella -->
     <ng-template pTemplate="summary">
         <div class="flex align-items-center justify-content-between">
+            <!-- Visualizza il totale dei prodotti -->
             In total there are {{products ? products.length : 0 }} products.
         </div>
     </ng-template>

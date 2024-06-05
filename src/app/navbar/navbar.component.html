@@ -1,14 +1,22 @@
 <nav class="mask">
+  <!-- Link alla dashboard principale -->
   <a routerLink="/dashboard">TechHive</a>
   <ul class="list">
+    <!-- Link per il login, visibile solo se l'utente non è loggato -->
     <li *ngIf="!authService.isLoggedIn()"><a routerLink="/login">Login</a></li>
+    <!-- Link per la registrazione, visibile solo se l'utente non è loggato -->
     <li *ngIf="!authService.isLoggedIn()"><a routerLink="/signup">Register</a></li>
+    <!-- Link per il logout, visibile solo se l'utente è loggato -->
     <li *ngIf="authService.isLoggedIn()"><a (click)="logout()">Logout</a></li>
+    <!-- Link per l'Admin Dashboard, visibile solo se l'utente è un amministratore e loggato -->
     <li *ngIf="authService.isAdmin() && authService.isLoggedIn()"><a routerLink="/admin-dashboard">Admin Dashboard</a></li>
   </ul>
   <div class="search-container">
+    <!-- Pulsante per mostrare/nascondere la barra di ricerca -->
     <button class="search" (click)="toggleSearch()">Search</button>
+    <!-- Barra di ricerca, visibile solo se `showSearch` è true -->
     <input #searchBox type="text" class="search-box" [(ngModel)]="searchText" (keydown.enter)="search()" *ngIf="showSearch" placeholder="Search...">
+    <!-- Componente personalizzato per il carrello -->
     <app-cart-dropdown></app-cart-dropdown>
   </div>
 </nav>

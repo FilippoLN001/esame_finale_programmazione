@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './app/pages/dashboard/dashboard.component';
-import { ProductsComponent } from './app/pages/products/products.component';
 import { ProductDetailComponent } from './app/pages/product-detail/product-detail.component';
 import { SignupComponent } from './app/pages/signup/signup.component';
 import { SigninComponent } from '../app/app/pages/signin/signin.component'  
@@ -18,7 +17,6 @@ export const routes: Routes = [
     { path: 'dashboard', component: DashboardComponent }, //pagina iniziale
     { path: 'signup', component: SignupComponent }, //pagina di registrazione
     { path: 'login', component: SigninComponent }, //pagina di login
-    { path: 'products', component: ProductsComponent}, //pagina dei prodotti
     { path: 'products/:id', component: ProductDetailComponent, canActivate: [AuthGuard] }, //visializzazione del prodotto specifico solo se si e' autenticato
     { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate: [AuthGuard], data: { role: 'Admin' }}, //pagina di accesso solo admin
     { path: 'edit-product/:id', component: ProducteditComponent,canActivate: [AuthGuard], data: { role: 'Admin' } },

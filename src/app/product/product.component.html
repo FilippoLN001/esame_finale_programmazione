@@ -12,3 +12,19 @@
     <p>No products found.</p>
   </ng-template>
 </div>
+
+<!-- Contenitore Principale (product-grid):
+
+Div che contiene la griglia dei prodotti.
+Utilizzo di *ngIf con ng-container:
+
+Usa ng-container per verificare se filteredProducts ha elementi. Se ne ha, esegue il contenuto del ng-container. Altrimenti, esegue il contenuto del ng-template con la variabile #noProducts.
+Ciclo *ngFor:
+
+Cicla attraverso filteredProducts e crea un div per ogni prodotto.
+Visualizzazione dei Dettagli del Prodotto:
+
+Mostra il nome, l'immagine, la categoria, la marca, il prezzo e la data di messa in vendita del prodotto.
+Gestione del Caso Nessun Prodotto:
+
+Utilizza un ng-template per visualizzare un messaggio "No products found" se filteredProducts è vuoto. -->

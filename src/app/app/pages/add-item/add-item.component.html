@@ -1,13 +1,20 @@
 <div class="container">
+  <!-- Formulario reattivo associato al formGroup 'productForm' e gestisce l'evento di invio del form con 'addProduct()' -->
   <form [formGroup]="productForm" (ngSubmit)="addProduct()" class="product-form">
+    
+    <!-- Campo per il nome del prodotto -->
     <div class="form-group">
       <label>Nome</label>
       <input formControlName="nome" class="form-control" />
     </div>
+
+    <!-- Campo per la marca del prodotto -->
     <div class="form-group">
       <label>Marca</label>
       <input formControlName="marca" class="form-control" />
     </div>
+
+    <!-- Campo per la categoria del prodotto con menu a tendina -->
     <div class="form-group">
       <label>Categoria</label>
       <select formControlName="categoria" class="form-control">
@@ -21,23 +28,32 @@
         <option value="componenti_pc">Componenti PC</option>
       </select>
     </div>
+
+    <!-- Campo per il prezzo del prodotto -->
     <div class="form-group">
       <label>Prezzo</label>
       <input formControlName="prezzo" class="form-control" />
     </div>
+
+    <!-- Campo per l'immagine del prodotto -->
     <div class="form-group">
       <label>Immagine</label>
       <input type="file" (change)="onFileChange($event)" class="form-control" />
     </div>
+
+    <!-- Campo per la descrizione del prodotto -->
     <div class="form-group">
       <label>Descrizione</label>
       <textarea formControlName="descrizione" class="form-control"></textarea>
     </div>
-  
+
+    <!-- Campo per la data di messa in vendita del prodotto -->
     <div class="form-group">
       <label>Data di messa in vendita</label>
       <input formControlName="data_messa_in_vendita" type="date" class="form-control" />
     </div>
+
+    <!-- Pulsante per inviare il form -->
     <button type="submit" class="btn btn-primary">Aggiungi Prodotto</button>
   </form>
 </div>

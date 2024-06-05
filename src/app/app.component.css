@@ -1,23 +1,27 @@
-  nav a {
-    padding: 1rem;
-    text-decoration: none;
-    margin-top: 10px;
-    display: inline-block;
-    background-color: #e8e8e8;
-    color: #3d3d3d;
-    border-radius: 4px;
-  }
-  nav a:hover {
-    color: white;
-    background-color: #42545C;
-  }
-  nav a.active {
-    background-color: black;
-  }
-  body {
-    /* Utilizza linear-gradient per creare uno sfondo graduato */
-    background: linear-gradient(135deg, #181c1e, #253126, #384a32, #50673e, #738e54);
-  }
- 
-  
-  
+/* Stile per i link di navigazione all'interno dell'elemento nav */
+nav a {
+  padding: 1rem; /* Aggiunge padding attorno ai link */
+  text-decoration: none; /* Rimuove la sottolineatura predefinita dei link */
+  margin-top: 10px; /* Aggiunge un margine superiore di 10px */
+  display: inline-block; /* Imposta i link come blocchi inline */
+  background-color: #e8e8e8; /* Colore di sfondo dei link */
+  color: #3d3d3d; /* Colore del testo dei link */
+  border-radius: 4px; /* Arrotonda gli angoli dei link */
+}
+
+/* Stile per i link di navigazione al passaggio del mouse */
+nav a:hover {
+  color: white; /* Cambia il colore del testo a bianco */
+  background-color: #42545C; /* Cambia il colore di sfondo */
+}
+
+/* Stile per i link di navigazione attivi */
+nav a.active {
+  background-color: black; /* Colore di sfondo per i link attivi */
+}
+
+/* Stile per il body */
+body {
+  /* Utilizza linear-gradient per creare uno sfondo graduato */
+  background: linear-gradient(135deg, #181c1e, #253126, #384a32, #50673e, #738e54);
+}

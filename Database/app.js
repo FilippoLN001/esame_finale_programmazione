@@ -1,3 +1,4 @@
+// Importa i moduli necessari
 const express = require('express');
 const mysql = require('mysql2/promise');
 const multer = require('multer');
@@ -9,12 +10,15 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 
+// Crea un'applicazione Express
 const app = express();
 const port = 3000;
 
-app.use(cors());
-app.use(express.json()); // Usare express.json() invece di body-parser per le richieste JSON
+// Configura il middleware
+app.use(cors()); // Abilita CORS per permettere richieste da altri domini
+app.use(express.json()); // Usa il middleware per parsare il corpo delle richieste in formato JSON
 
+// Crea una connessione al database MySQL
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
@@ -25,6 +29,7 @@ const pool = mysql.createPool({
   queueLimit: 0
 });
 
+// Funzione per creare le tabelle nel database
 const createTables = async () => {
   try {
     const createProdottiTable = `
@@ -73,20 +78,25 @@ const createTables = async () => {
   }
 };
 
+// Esegue la creazione delle tabelle
 createTables();
 
+// Imposta l'header per la Content-Security-Policy
 app.use((req, res, next) => {
   res.setHeader("Content-Security-Policy", "default-src 'self'; font-src 'self' http://localhost:3000;");
   next();
 });
 
+// Configura il middleware per servire file statici
 app.use('/assets/imagines', express.static(path.join(__dirname, '../src/assets/imagines')));
 
+// Funzione per gestire gli errori
 const handleError = (error, res) => {
   console.error(error);
   res.status(500).json({ error: error.message || 'Internal Server Error' });
 };
 
+// Configura multer per gestire l'upload delle immagini
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadPath = path.join(__dirname, '../src/assets/imagines');
@@ -102,6 +112,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+// Route per aggiungere un prodotto
 app.post('/products', upload.single('immagine'), async (req, res) => {
   const { nome, marca, categoria, prezzo, descrizione, data_messa_in_vendita } = req.body;
   const immagine = req.file ? `assets/imagines/${req.file.filename}` : null;
@@ -120,6 +131,7 @@ app.post('/products', upload.single('immagine'), async (req, res) => {
   }
 });
 
+// Route per ottenere tutti i prodotti
 app.get('/products', async (req, res) => {
   try {
     const [results] = await pool.query('SELECT * FROM Prodotti');
@@ -130,6 +142,7 @@ app.get('/products', async (req, res) => {
   }
 });
 
+// Route per ottenere un prodotto per ID
 app.get('/products/:id', async (req, res) => {
   const { id } = req.params;
   const query = 'SELECT * FROM Prodotti WHERE id = ?';
@@ -145,6 +158,7 @@ app.get('/products/:id', async (req, res) => {
   }
 });
 
+// Route per aggiornare un prodotto
 app.put('/products/:id', upload.single('immagine'), async (req, res) => {
   try {
     const productId = req.params.id;
@@ -164,6 +178,7 @@ app.put('/products/:id', upload.single('immagine'), async (req, res) => {
   }
 });
 
+// Route per eliminare un prodotto
 app.delete('/products/:id', async (req, res) => {
   const { id } = req.params;
   const query = 'DELETE FROM Prodotti WHERE id = ?';
@@ -179,6 +194,7 @@ app.delete('/products/:id', async (req, res) => {
   }
 });
 
+// Route per la registrazione
 app.post('/signup', async (req, res) => {
   const { nome, cognome, username, email, password } = req.body;
   const userExistsQuery = 'SELECT * FROM Utenti WHERE username = ? OR email = ?';
@@ -214,6 +230,7 @@ app.post('/signup', async (req, res) => {
   }
 });
 
+// Route per il login
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -243,6 +260,7 @@ app.post('/login', async (req, res) => {
   }
 });
 
+// Middleware per verificare se l'utente è admin
 function isAdmin(req, res, next) {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) {
@@ -263,10 +281,12 @@ function isAdmin(req, res, next) {
   });
 }
 
+// Route per ottenere dati sensibili (solo admin)
 app.get('/admin/data', isAdmin, (req, res) => {
   res.json({ message: 'Dati sensibili solo per Admin' });
 });
 
+// Route per l'acquisto
 app.post('/acquista', async (req, res) => {
   const { id_prodotto } = req.body;
   const id_utente = req.user.id;
@@ -281,6 +301,7 @@ app.post('/acquista', async (req, res) => {
   }
 });
 
+// Route per ottenere tutti gli utenti
 app.get('/users', async (req, res) => {
   try {
     const [results] = await pool.query('SELECT * FROM Utenti');
@@ -290,6 +311,7 @@ app.get('/users', async (req, res) => {
   }
 });
 
+// Route per ottenere un utente per ID
 app.get('/users/:id', async (req, res) => {
   const { id } = req.params;
   const query = 'SELECT * FROM Utenti WHERE id = ?';
@@ -305,6 +327,7 @@ app.get('/users/:id', async (req, res) => {
   }
 });
 
+// Route per la ricerca di prodotti
 app.get('/products/search', async (req, res) => {
   const { query } = req.query;
 
@@ -323,10 +346,12 @@ app.get('/products/search', async (req, res) => {
   }
 });
 
+// Avvia il server
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
 
+// Funzione per aggiornare un prodotto
 async function updateProduct(productId, updates, data_messa_in_vendita) {
   const {
     nome = '', 
