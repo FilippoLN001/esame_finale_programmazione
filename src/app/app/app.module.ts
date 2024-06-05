@@ -45,6 +45,7 @@ import { AuthInterceptor } from '../auth/auth.interceptor';
 import { SigninComponent } from './pages/signin/signin.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { AddItemComponent } from './pages/add-item/add-item.component';
+import { CartDropdownComponent } from '../cart-dropdown/cart-dropdown.component';
 
 
 function tokenGetter() {
@@ -65,6 +66,7 @@ function tokenGetter() {
     SigninComponent,
     AddItemComponent,
     OrderListComponent,
+    CartDropdownComponent,
     
     AdminDashboardComponent
   ],

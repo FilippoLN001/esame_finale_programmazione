@@ -1,0 +1,9 @@
+<div class="cart-container">
+    <button class="icon-button" (click)="toggleCartMenu()">
+      <i class="pi pi-cart-arrow-down" style="font-size: 1.5rem;"></i>
+      <span *ngIf="cartService.getCartProducts().length > 0" class="cart-badge">{{ cartService.getCartProducts().length }}</span>
+    </button>
+    <p-panelMenu *ngIf="showCartMenu" [model]="cartMenuItems" [style]="{ 'width': '300px' }"></p-panelMenu>
+    <button *ngIf="showCartMenu" class="btn btn-primary" (click)="checkout()">Checkout</button>
+  </div>
+  

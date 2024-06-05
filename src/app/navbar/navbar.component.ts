@@ -1,11 +1,6 @@
-// navbar.component.ts
 import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
-import { CartService } from '../cart.service';
-import { Prodotto } from '../product-model/product-model.module';
-import { MenuItem } from 'primeng/api';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-navbar',
@@ -16,17 +11,10 @@ export class NavbarComponent implements OnInit {
   searchText: string = '';
   username: string = '';
   showSearch: boolean = false;
-  showCartMenu: boolean = false;
-  cartMenuItems: MenuItem[] = [];
 
   @ViewChild('searchBox') searchBox!: ElementRef;
 
-  constructor(
-    private router: Router,
-    public authService: AuthService,
-    public cartService: CartService,
-    private snackBar: MatSnackBar
-  ) {}
+  constructor(private router: Router, public authService: AuthService) {}
 
   ngOnInit() {
     this.authService.getUsernameObservable().subscribe((username: string) => {
@@ -36,11 +24,6 @@ export class NavbarComponent implements OnInit {
     if (this.authService.isLoggedIn()) {
       this.authService.fetchUserDetails();
     }
-
-    this.updateCartMenu();
-    this.cartService.cartUpdated.subscribe(() => {
-      this.updateCartMenu();
-    });
   }
 
   toggleSearch(): void {
@@ -66,30 +49,5 @@ export class NavbarComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
-  }
-
-  toggleCartMenu() {
-    this.showCartMenu = !this.showCartMenu;
-  }
-
-  updateCartMenu() {
-    const products = this.cartService.getCartProducts();
-    this.cartMenuItems = products.map((product: Prodotto) => {
-      return {
-        label: `${product.nome} - ${product.prezzo}`,
-        icon: 'pi pi-fw pi-cart',
-        command: () => {
-          this.router.navigate(['/products', product.id]);
-        }
-      };
-    });
-  }
-
-  checkout() {
-    this.cartService.clearCart();
-    this.updateCartMenu();
-    this.snackBar.open('Ordine effettuato con successo!', 'Chiudi', {
-      duration: 3000,
-    });
   }
 }
